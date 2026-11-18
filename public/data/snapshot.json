@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-18T11:23:38.475753+00:00",
+  "crawl": {
+    "snapshotAt": "2026-11-18T11:13:42.145285+00:00",
+    "complete": false,
+    "allDiscovered": 64541,
+    "inScope": 46818,
+    "successfulPages": 1394,
+    "statuses": {
+      "completed": 1411,
+      "failed": 27,
+      "pending": 44912,
+      "skipped": 468
+    },
+    "urlCoveragePercent": 3.0137981118373274,
+    "sequences": 552,
+    "completedSequences": 127,
+    "topics": {
+      "topics_discovered": 6372,
+      "topics_with_first_ten_pages": 14,
+      "shorter_topics_complete": 80,
+      "topics_pending": 6278,
+      "topic_page_goal": 10
+    },
+    "integrityOk": true,
+    "foreignKeyViolations": 0,
+    "undocumentedExclusions": 0,
+    "unresolvedBrowserAudits": 1,
+    "history": [
+      {
+        "hour": "2026-11-18T05:00:00Z",
+        "pages": 375
+      },
+      {
+        "hour": "2026-11-18T06:00:00Z",
+        "pages": 18
+      },
+      {
+        "hour": "2026-11-18T07:00:00Z",
+        "pages": 97
+      },
+      {
+        "hour": "2026-11-18T10:00:00Z",
+        "pages": 653
+      },
+      {
+        "hour": "2026-11-18T11:00:00Z",
+        "pages": 251
+      }
+    ]
+  },
+  "labeling": {
+    "snapshotAt": "2026-11-18T10:58:33.333803+00:00",
+    "messages": 4819,
+    "prepared": 4819,
+    "contributors": 1997,
+    "sourceTopicPages": 605,
+    "humanReview": 3685,
+    "contentCounts": {
+      "insufficient_context": 964,
+      "ordinary_discussion": 3239,
+      "privacy_information_removed": 276,
+      "health_or_reproductive_education": 339,
+      "medical_claim_needs_verification": 73,
+      "adult_relationship_discussion": 135,
+      "targeted_harassment": 42,
+      "self_harm_discussion": 15,
+      "commercial_promotion": 28,
+      "suspected_scam_or_deception_review": 5,
+      "potentially_dangerous_instructions": 3,
+      "threat_or_violence": 22,
+      "adult_sexual_discussion_non_graphic": 11,
+      "child_sexual_safety_review": 2
+    },
+    "participationCounts": {
+      "question_asking": 891,
+      "conversation_other": 943,
+      "experience_sharing": 1158,
+      "supportive_reply": 636,
+      "advice_offering": 1003,
+      "insufficient_evidence": 806,
+      "resource_sharing": 104,
+      "promotion_observed": 28
+    },
+    "contributorsByRole": {
+      "question_asking": 622,
+      "conversation_other": 606,
+      "experience_sharing": 586,
+      "supportive_reply": 428,
+      "advice_offering": 626,
+      "insufficient_evidence": 567,
+      "resource_sharing": 56,
+      "promotion_observed": 24
+    },
+    "confidenceCounts": {
+      "0.50 to below 0.75": 3153,
+      "0.75 to 1.00": 1459,
+      "Below 0.50": 207
+    },
+    "modelActions": {
+      "allow": 4595,
+      "review": 224
+    },
+    "conservativeCostUsd": 2.784307,
+    "budgetUsd": 5,
+    "taxonomyVersion": "1.1.0",
+    "requestedModel": "deepseek-v4-1-flash-1017",
+    "reportedModel": "deepseek-flash",
+    "exactBuildVerified": false,
+    "legalVerdicts": 0,
+    "sensitivePersonalAttributeLabels": 0
+  },
+  "scope": {
+    "topicPageLimit": 10,
+    "otherListingPageLimit": 3,
+    "messageClassificationValidated": false,
+    "liveConnection": false
+  }
+}

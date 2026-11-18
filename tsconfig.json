@@ -1,0 +1,4 @@
+{
+  "compilerOptions": { "target": "ES2022", "lib": ["ES2022", "DOM"], "module": "ESNext", "moduleResolution": "Bundler", "strict": true, "outDir": "dist/assets", "rootDir": "src", "skipLibCheck": true, "types": [] },
+  "include": ["src"]
+}

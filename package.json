@@ -1,0 +1,8 @@
+{
+  "name": "ninisite-manager-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "npm run build && node scripts/serve.mjs", "build": "tsc -p tsconfig.json && node scripts/copy-static.mjs", "preview": "node scripts/serve.mjs" },
+  "devDependencies": { "typescript": "7.0.2" }
+}
