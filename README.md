@@ -26,3 +26,5 @@ npm run preview
 
 `https://ninisitev-cyber.github.io/ninisite-managerdashboard.github.io/`
 
+گزارش مدیریتی یکپارچه به‌صورت صفحهٔ مستقل و خودبسنده در [ninisite_all_in_one.html](https://ninisitev-cyber.github.io/ninisite-managerdashboard.github.io/ninisite_all_in_one.html) منتشر می‌شود.
+

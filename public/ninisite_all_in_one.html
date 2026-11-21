@@ -1,0 +1,1290 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14283f">
+<meta name="description" content="گزارش مدیریتی چندصفحه‌ای نی‌نی‌سایت در یک فایل HTML مستقل">
+<title>دیدبان نی‌نی‌سایت | گزارش مدیریتی چندصفحه‌ای</title>
+<style>
+    :root {
+      --navy:#14283f; --navy-2:#203d58; --teal:#087f8c; --teal-2:#dff3f2;
+      --ink:#1d2c3b; --muted:#657487; --line:#e1e8ee; --paper:#f4f7fa;
+      --white:#fff; --blue:#4d78a8; --amber:#b7791f; --amber-bg:#fff5df;
+      --red:#b54747; --red-bg:#fff0ef; --green:#287b60; --green-bg:#e9f6ef;
+      --shadow:0 10px 30px rgba(20,40,63,.07); --radius:18px;
+    }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; scroll-padding-top:88px; }
+    body {
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:Tahoma,"Segoe UI",Arial,sans-serif; line-height:1.85;
+    }
+    a { color:var(--teal); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    button,input { font:inherit; }
+    .topbar {
+      position:sticky; top:0; z-index:20; background:rgba(20,40,63,.97);
+      color:#fff; box-shadow:0 4px 18px rgba(0,0,0,.12); backdrop-filter:blur(12px);
+    }
+    .topbar-inner {
+      max-width:1440px; margin:auto; padding:12px 24px; display:flex;
+      align-items:center; justify-content:space-between; gap:16px;
+    }
+    .brand { display:flex; align-items:center; gap:12px; min-width:220px; }
+    .brand-mark {
+      width:40px;height:40px;border-radius:13px;display:grid;place-items:center;
+      background:linear-gradient(135deg,#16a0a1,#0a687b);font-weight:800;font-size:18px;
+    }
+    .brand strong { display:block; font-size:14px; letter-spacing:.2px; }
+    .brand small { display:block;color:#c4d2de;font-size:10px;letter-spacing:.6px; }
+    .nav { display:flex; flex-wrap:wrap; gap:5px; justify-content:center; }
+    .nav a { color:#d9e5ed;font-size:11px;padding:6px 9px;border-radius:9px; }
+    .nav a:hover { background:rgba(255,255,255,.12);text-decoration:none;color:#fff; }
+    .top-actions { display:flex;gap:8px;align-items:center; }
+    .btn {
+      border:1px solid rgba(255,255,255,.25); color:#fff;background:transparent;
+      border-radius:10px;padding:7px 11px;font-size:11px;cursor:pointer;
+    }
+    .btn:hover { background:rgba(255,255,255,.12); }
+    .container { max-width:1440px; margin:auto; padding:26px 24px 60px; }
+    .hero {
+      background:linear-gradient(120deg,#14283f 0%,#1e4960 58%,#087f8c 100%);
+      color:#fff;border-radius:24px;padding:34px 36px;position:relative;overflow:hidden;
+      box-shadow:var(--shadow);margin-bottom:20px;
+    }
+    .hero:after {
+      content:"";position:absolute;width:360px;height:360px;border-radius:50%;
+      border:1px solid rgba(255,255,255,.13);left:-100px;top:-190px;
+      box-shadow:0 0 0 35px rgba(255,255,255,.035),0 0 0 75px rgba(255,255,255,.025);
+    }
+    .eyebrow { color:#a8e4df;font-size:11px;font-weight:700;letter-spacing:.5px; }
+    h1 { margin:7px 0 8px;font-size:clamp(24px,3vw,38px);line-height:1.4; }
+    .hero p { margin:0;max-width:850px;color:#dbe8ef;font-size:13px; }
+    .hero-meta { display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;position:relative;z-index:1; }
+    .pill {
+      display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;
+      font-size:10px;font-weight:700;background:rgba(255,255,255,.12);color:#fff;
+      border:1px solid rgba(255,255,255,.14);
+    }
+    .pill.warn { background:rgba(255,190,80,.16);color:#ffe1a8;border-color:rgba(255,210,130,.2); }
+    .pill.good { background:rgba(104,220,169,.15);color:#baf1d5; }
+    .notice {
+      border:1px solid #f0d9a8;background:var(--amber-bg);color:#6c4b17;
+      padding:14px 17px;border-radius:14px;font-size:12px;margin:18px 0 22px;
+    }
+    .notice strong { color:#56380d; }
+    .notice.red { background:var(--red-bg);border-color:#f2cccc;color:#7d3434; }
+    .notice.green { background:var(--green-bg);border-color:#c9e8d7;color:#235e49; }
+    .section { margin-top:30px; }
+    .section-head {
+      display:flex;align-items:flex-end;justify-content:space-between;gap:14px;
+      margin-bottom:14px;
+    }
+    .section-head h2 { margin:0;color:var(--navy);font-size:20px;line-height:1.5; }
+    .section-head p { margin:3px 0 0;color:var(--muted);font-size:11px; }
+    .section-tag { color:var(--teal);font-size:10px;font-weight:700;white-space:nowrap; }
+    .grid { display:grid;gap:14px; }
+    .kpi-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
+    .kpi {
+      background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+      padding:17px 18px;box-shadow:var(--shadow);min-width:0;
+    }
+    .kpi-label { color:var(--muted);font-size:11px; }
+    .kpi-value { color:var(--navy);font-size:clamp(22px,2.2vw,30px);font-weight:800;line-height:1.45;margin:5px 0;direction:ltr;text-align:right; }
+    .kpi-sub { color:var(--muted);font-size:10px; }
+    .kpi .mini-line { height:5px;background:#edf2f5;border-radius:9px;margin-top:12px;overflow:hidden; }
+    .kpi .mini-line span { display:block;height:100%;border-radius:9px;background:var(--teal); }
+    .two-col { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .three-col { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .panel {
+      background:#fff;border:1px solid var(--line);border-radius:var(--radius);
+      padding:20px;box-shadow:var(--shadow);min-width:0;
+    }
+    .panel h3 { margin:0 0 12px;color:var(--navy);font-size:14px; }
+    .panel p { color:var(--muted);font-size:11px;margin:8px 0; }
+    .snapshot {
+      border:1px solid var(--line);border-radius:16px;background:#fff;padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .snapshot-top { display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px; }
+    .snapshot h3 { margin:0;color:var(--navy);font-size:14px; }
+    .snapshot p { margin:5px 0;color:var(--muted);font-size:11px; }
+    .tag {
+      display:inline-block;border-radius:999px;padding:4px 8px;font-size:9px;font-weight:700;
+      background:#edf3f7;color:#4d6072;
+    }
+    .tag.teal { background:#e2f4f2;color:#08736f; }
+    .tag.amber { background:#fff1d5;color:#916014; }
+    .tag.red { background:#ffebea;color:#a33d3d; }
+    .metric-list { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:13px; }
+    .metric {
+      padding:10px 11px;border-radius:11px;background:#f6f8fa;border:1px solid #edf1f4;
+    }
+    .metric b { display:block;font-size:17px;color:var(--navy);direction:ltr;text-align:right; }
+    .metric span { display:block;color:var(--muted);font-size:10px; }
+    .table-wrap { overflow:auto;border:1px solid var(--line);border-radius:13px;background:#fff; }
+    table { border-collapse:collapse;width:100%;font-size:11px;min-width:560px; }
+    th,td { padding:10px 12px;text-align:right;border-bottom:1px solid #edf1f4;vertical-align:top; }
+    th { background:#f1f5f8;color:#31465a;font-weight:800;white-space:nowrap; }
+    tr:last-child td { border-bottom:0; }
+    td.num,th.num { direction:ltr;text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap; }
+    .bar-row { display:grid;grid-template-columns:minmax(125px,1.1fr) minmax(120px,2fr) 65px;gap:10px;align-items:center;margin:10px 0;font-size:10px; }
+    .bar-label { color:#405267; }
+    .bar-track { height:9px;border-radius:99px;background:#edf2f5;overflow:hidden; }
+    .bar-fill { height:100%;border-radius:99px;background:linear-gradient(90deg,#087f8c,#48b8ad); }
+    .bar-value { text-align:left;direction:ltr;color:var(--navy);font-weight:800;font-variant-numeric:tabular-nums; }
+    .progress-row { margin:14px 0; }
+    .progress-label { display:flex;justify-content:space-between;gap:12px;font-size:11px;margin-bottom:6px; }
+    .progress-label b { color:var(--navy);direction:ltr; }
+    .progress-track { height:12px;border-radius:99px;background:#edf2f5;overflow:hidden; }
+    .progress-fill { height:100%;background:var(--teal);border-radius:99px; }
+    .small { font-size:10px!important;color:var(--muted)!important; }
+    .ltr { direction:ltr;unicode-bidi:embed;display:inline-block; }
+    .muted { color:var(--muted); }
+    .danger-text { color:var(--red);font-weight:700; }
+    .good-text { color:var(--green);font-weight:700; }
+    .amber-text { color:var(--amber);font-weight:700; }
+    .list { margin:8px 0;padding:0 18px 0 0;font-size:11px; }
+    .list li { margin:5px 0; }
+    .status-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px; }
+    .status {
+      border-radius:13px;padding:13px;background:#f7f9fb;border:1px solid var(--line);
+    }
+    .status b { display:block;color:var(--navy);font-size:12px;margin-bottom:3px; }
+    .status span { color:var(--muted);font-size:10px; }
+    .timeline { border-right:2px solid #d9e6eb;margin:12px 5px 0 0;padding-right:17px; }
+    .timeline-item { position:relative;margin:0 0 15px; }
+    .timeline-item:before {
+      content:"";position:absolute;right:-23px;top:8px;width:9px;height:9px;
+      border-radius:50%;background:var(--teal);border:3px solid #e3f3f2;
+    }
+    .timeline-item b { color:var(--navy);font-size:11px; }
+    .timeline-item p { margin:2px 0;color:var(--muted);font-size:10px; }
+    details {
+      background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px 15px;
+      margin:10px 0;box-shadow:0 3px 12px rgba(20,40,63,.03);
+    }
+    summary { cursor:pointer;color:var(--navy);font-size:12px;font-weight:800; }
+    details[open] summary { margin-bottom:12px; }
+    .footnote { font-size:10px;color:var(--muted);margin-top:9px; }
+    .code {
+      direction:ltr;text-align:left;display:block;overflow:auto;background:#14283f;color:#d9f3ef;
+      padding:12px 14px;border-radius:10px;font:11px/1.8 Consolas,monospace;white-space:pre;
+    }
+    .footer {
+      margin-top:36px;padding:20px 4px;border-top:1px solid var(--line);
+      display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:10px;
+    }
+    .searchbox {
+      width:min(320px,100%);border:1px solid var(--line);border-radius:10px;
+      padding:8px 11px;background:#fff;color:var(--ink);font-size:11px;
+    }
+    .hidden-row { display:none; }
+
+    .manager-intro {
+      border:1px solid #cfe2e8;background:linear-gradient(135deg,#f4fbfc,#fff);
+      border-radius:18px;padding:19px 21px;margin:18px 0 24px;
+    }
+    .manager-intro h2 { margin:0 0 7px;color:var(--navy);font-size:17px; }
+    .manager-intro p { margin:0;color:#46596b;font-size:12px; }
+    .manager-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px; }
+    .manager-card {
+      background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px;
+      box-shadow:var(--shadow);min-width:0;
+    }
+    .manager-card .step {
+      width:29px;height:29px;display:grid;place-items:center;border-radius:9px;
+      background:#e3f3f2;color:var(--teal);font-weight:800;font-size:12px;margin-bottom:9px;
+    }
+    .manager-card h3 { margin:0 0 7px;color:var(--navy);font-size:13px; }
+    .manager-card p { margin:0;color:var(--muted);font-size:11px; }
+    .manager-card .result {
+      display:block;margin-top:10px;padding-top:9px;border-top:1px solid #edf1f4;
+      color:var(--navy);font-size:11px;font-weight:800;
+    }
+    .work-table td:first-child { min-width:135px;font-weight:800;color:var(--navy); }
+    .work-table td:nth-child(2) { min-width:230px; }
+    .work-table td:nth-child(3) { min-width:220px; }
+    .meaning-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px; }
+    .meaning {
+      border:1px solid var(--line);border-radius:13px;padding:14px;background:#fff;
+    }
+    .meaning h3 { margin:0 0 5px;font-size:12px;color:var(--navy); }
+    .meaning p { margin:0;font-size:11px;color:var(--muted); }
+    .meaning .takeaway { display:block;margin-top:8px;color:var(--teal);font-weight:800;font-size:11px; }
+    .status-label {
+      display:inline-block;padding:4px 8px;border-radius:7px;font-size:9px;font-weight:800;
+      white-space:nowrap;
+    }
+    .status-done { background:#e8f5ee;color:#27684e; }
+    .status-partial { background:#fff3dc;color:#8c601b; }
+    .status-pending { background:#ffebea;color:#a33d3d; }
+    .analysis-table td:first-child { min-width:150px;font-weight:800;color:var(--navy); }
+    .analysis-table td:nth-child(2) { min-width:210px; }
+    .analysis-table td:nth-child(3) { min-width:250px; }
+    .decision-card {
+      background:#14283f;color:#fff;border-radius:17px;padding:18px 20px;
+    }
+    .decision-card h3 { color:#fff;margin:0 0 8px;font-size:14px; }
+    .decision-card p,.decision-card li { color:#d7e4ed;font-size:11px; }
+    .decision-card .list { margin-bottom:0; }
+    @media(max-width:900px) {
+      .manager-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media(max-width:720px) {
+      .manager-grid,.meaning-grid { grid-template-columns:1fr; }
+    }
+    @media print {
+      .manager-card,.meaning,.manager-intro,.decision-card { break-inside:avoid; }
+    }
+
+    @media(max-width:1050px) {
+      .nav { display:none; }
+      .kpi-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media(max-width:720px) {
+      .container { padding:16px 13px 40px; }
+      .topbar-inner { padding:10px 13px; }
+      .brand { min-width:0; }
+      .brand small { display:none; }
+      .top-actions .btn:first-child { display:none; }
+      .hero { padding:25px 20px;border-radius:18px; }
+      .two-col,.three-col,.status-grid { grid-template-columns:1fr; }
+      .kpi-grid { grid-template-columns:repeat(2,minmax(0,1fr));gap:9px; }
+      .kpi { padding:13px; }
+      .kpi-value { font-size:22px; }
+      .section-head { align-items:flex-start;flex-direction:column; }
+      .bar-row { grid-template-columns:110px minmax(70px,1fr) 52px;gap:7px; }
+      .panel { padding:15px; }
+      .metric-list { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media print {
+      @page { size:A4; margin:13mm; }
+      body { background:#fff;print-color-adjust:exact;-webkit-print-color-adjust:exact; }
+      .topbar { position:static;box-shadow:none; }
+      .nav,.top-actions,.searchbox { display:none!important; }
+      .container { max-width:none;padding:12px 0; }
+      .hero,.panel,.kpi,.snapshot,details { box-shadow:none;break-inside:avoid; }
+      .section { break-inside:auto; }
+      a { color:inherit;text-decoration:none; }
+      details { break-inside:avoid; }
+      details > * { display:block!important; }
+      .footer { break-inside:avoid; }
+    }
+  
+
+    .topbar { position:sticky; top:0; z-index:30; background:rgba(20,40,63,.98); color:#fff; box-shadow:0 4px 18px rgba(0,0,0,.12); }
+    .topbar-inner { max-width:1440px; margin:auto; padding:10px 24px; display:flex; align-items:center; justify-content:space-between; gap:14px; }
+    .brand { display:flex; align-items:center; gap:12px; min-width:220px; }
+    .brand-mark { width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#16a0a1,#0a687b);font-weight:800;font-size:18px; }
+    .brand strong { display:block;font-size:14px;letter-spacing:.2px; }
+    .brand small { display:block;color:#c4d2de;font-size:10px;letter-spacing:.6px; }
+    .top-actions { display:flex;gap:8px;align-items:center; }
+    .btn { border:1px solid rgba(255,255,255,.25);color:#fff;background:transparent;border-radius:10px;padding:7px 11px;font-size:11px;cursor:pointer; }
+    .btn:hover { background:rgba(255,255,255,.12); }
+    .page-count { color:#d9e5ed;font-size:10px;white-space:nowrap; }
+    .page-nav-wrap { position:sticky;top:60px;z-index:25;background:rgba(244,247,250,.97);border-bottom:1px solid var(--line);box-shadow:0 3px 10px rgba(20,40,63,.04); }
+    .page-nav { max-width:1440px;margin:auto;padding:9px 24px;display:flex;gap:7px;overflow-x:auto;white-space:nowrap;scrollbar-width:thin; }
+    .page-nav a { display:inline-flex;align-items:center;padding:7px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;color:#42566b;font-size:10px;font-weight:700;flex:0 0 auto; }
+    .page-nav a:hover { text-decoration:none;border-color:#9dcacb;color:var(--teal); }
+    .page-nav a.active { background:#e3f3f2;border-color:#b9dedb;color:#076e76; }
+    .page-hero { background:linear-gradient(120deg,#14283f 0%,#1e4960 58%,#087f8c 100%);color:#fff;border-radius:22px;padding:25px 30px;position:relative;overflow:hidden;box-shadow:var(--shadow);margin-bottom:20px; }
+    .page-hero .eyebrow { color:#a8e4df;font-size:10px;font-weight:700; }
+    .page-hero h1 { margin:5px 0 6px;font-size:clamp(22px,2.7vw,32px);line-height:1.45; }
+    .page-hero p { margin:0;max-width:900px;color:#dbe8ef;font-size:12px; }
+    .page-hero-meta { display:flex;flex-wrap:wrap;gap:7px;margin-top:13px; }
+    .page-hero-meta span { display:inline-flex;padding:4px 9px;border-radius:999px;font-size:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14);color:#f2f7fa; }
+    .page-index-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px; }
+    .page-index-card { display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px;box-shadow:var(--shadow);color:var(--ink);min-height:105px; }
+    .page-index-card:hover { text-decoration:none;border-color:#9dcacb;transform:translateY(-1px); }
+    .page-index-card strong { display:block;color:var(--navy);font-size:12px;margin-bottom:5px; }
+    .page-index-card span { display:block;color:var(--muted);font-size:10px; }
+    .page-index-card em { display:block;margin-top:9px;color:var(--teal);font-size:10px;font-style:normal;font-weight:800; }
+    .page-footer-nav { display:flex;justify-content:space-between;gap:12px;margin-top:28px;padding-top:17px;border-top:1px solid var(--line); }
+    .page-footer-nav a { display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 13px;font-size:10px;font-weight:700; }
+    .page-footer-nav a:hover { text-decoration:none;border-color:#9dcacb; }
+    .page-footer-nav .spacer { flex:1; }
+    @media(max-width:720px) {
+      .topbar-inner { padding:9px 13px; }
+      .brand { min-width:0; }
+      .brand small { display:none; }
+      .page-nav { padding:8px 13px; }
+      .page-hero { padding:22px 18px;border-radius:17px; }
+      .page-index-grid { grid-template-columns:1fr; }
+      .page-count { display:none; }
+      .page-footer-nav { flex-wrap:wrap; }
+    }
+    @media print {
+      .topbar,.page-nav-wrap,.page-footer-nav,.top-actions { display:none!important; }
+      .container { padding-top:0; }
+      .page-hero { break-inside:avoid; }
+    }
+
+
+.site-page { display:none; }
+.site-page.is-active { display:block; animation:reveal .18s ease-out; }
+@keyframes reveal { from {opacity:.65;transform:translateY(5px)} to {opacity:1;transform:translateY(0)} }
+.page-nav-wrap { position:sticky;top:58px;z-index:25;background:rgba(244,247,250,.97);border-bottom:1px solid var(--line);box-shadow:0 3px 10px rgba(20,40,63,.04); }
+.page-nav {max-width:1440px;margin:auto;padding:9px 24px;display:flex;gap:7px;overflow-x:auto;white-space:nowrap;scrollbar-width:thin;}
+.page-nav a {display:inline-flex;align-items:center;padding:7px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;color:#42566b;font-size:10px;font-weight:700;flex:0 0 auto;}
+.page-nav a:hover {text-decoration:none;border-color:#9dcacb;color:var(--teal);}
+.page-nav a.active {background:#e3f3f2;border-color:#b9dedb;color:#076e76;}
+.page-hero {background:linear-gradient(120deg,#14283f 0%,#1e4960 58%,#087f8c 100%);color:#fff;border-radius:22px;padding:25px 30px;position:relative;overflow:hidden;box-shadow:var(--shadow);margin-bottom:20px;}
+.page-hero .eyebrow {color:#a8e4df;font-size:10px;font-weight:700;}
+.page-hero h1 {margin:5px 0 6px;font-size:clamp(22px,2.7vw,32px);line-height:1.45;}
+.page-hero p {margin:0;max-width:900px;color:#dbe8ef;font-size:12px;}
+.page-hero-meta {display:flex;flex-wrap:wrap;gap:7px;margin-top:13px;}
+.page-hero-meta span {display:inline-flex;padding:4px 9px;border-radius:999px;font-size:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14);color:#f2f7fa;}
+.page-index-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+.page-index-card {display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px;box-shadow:var(--shadow);color:var(--ink);min-height:105px;}
+.page-index-card:hover {text-decoration:none;border-color:#9dcacb;transform:translateY(-1px);}
+.page-index-card strong {display:block;color:var(--navy);font-size:12px;margin-bottom:5px;}
+.page-index-card span {display:block;color:var(--muted);font-size:10px;}
+.page-index-card em {display:block;margin-top:9px;color:var(--teal);font-size:10px;font-style:normal;font-weight:800;}
+.page-footer-nav {display:flex;justify-content:space-between;gap:12px;margin-top:28px;padding-top:17px;border-top:1px solid var(--line);}
+.page-footer-nav a {display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 13px;font-size:10px;font-weight:700;}
+.page-footer-nav a:hover {text-decoration:none;border-color:#9dcacb;}
+.report-footer {margin-top:28px;padding:20px 4px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:15px;justify-content:space-between;color:var(--muted);font-size:10px;}
+.single-file-hint {font-size:10px;color:#cbe0e7;white-space:nowrap;}
+.topbar .brand {text-decoration:none!important;color:#fff;}
+.topbar .nav {display:none;}
+@media(max-width:720px) {
+  .page-nav {padding:8px 13px;}
+  .page-hero {padding:22px 18px;border-radius:17px;}
+  .page-index-grid {grid-template-columns:1fr;}
+  .single-file-hint {display:none;}
+  .page-footer-nav {flex-wrap:wrap;}
+}
+@media print {
+ .topbar,.page-nav-wrap,.page-footer-nav,.top-actions {display:none!important;}
+ .site-page:not(.is-active) {display:none!important;}
+ .site-page.is-active {display:block!important;}
+ .container {padding-top:0;}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#/overview" aria-label="رفتن به صفحه نخست">
+      <div class="brand-mark">ن</div>
+      <div><strong>دیدبان نی‌نی‌سایت</strong><small>MANAGEMENT REPORT · DATA &amp; AI</small></div>
+    </a>
+    <div class="top-actions">
+      <span class="single-file-hint">۹ صفحه در یک فایل آفلاین</span>
+      <input class="searchbox" id="reportSearch" type="search" placeholder="جستجو در جدول‌های صفحه..." aria-label="جستجو در جدول‌های صفحه">
+      <button class="btn" type="button" onclick="window.print()">چاپ صفحه</button>
+    </div>
+  </div>
+</header>
+<div class="page-nav-wrap"><nav class="page-nav" aria-label="صفحه‌های گزارش"><a href="#/overview" data-nav="overview">نمای کلی</a><a href="#/work" data-nav="work">کارهای انجام‌شده</a><a href="#/analysis" data-nav="analysis">فهرست تحلیل‌ها</a><a href="#/collection" data-nav="collection">پوشش خزنده</a><a href="#/participation" data-nav="participation">مشارکت کاربران</a><a href="#/content" data-nav="content">محتوا و بازبینی</a><a href="#/foundation" data-nav="foundation">پایگاه داده و AI</a><a href="#/decisions" data-nav="decisions">تصمیم‌ها</a><a href="#/roadmap" data-nav="roadmap">هزینه و نقشه راه</a></nav></div>
+<main id="main" class="container">
+<article class="site-page" id="page-overview" data-page="overview" aria-label="نمای کلی">
+<section class="hero" id="overview">
+<div class="eyebrow">گزارش مدیریتی تجمیعی · ۱۸ نوامبر ۲۰۲۶</div>
+<h1>چه کارهایی انجام شده، چه چیزی از داده‌ها فهمیده‌ایم و چه چیزی باقی مانده است؟</h1>
+<p>
+        نمای یکپارچه‌ای از وضعیت گردآوری، طبقه‌بندی پیام‌ها، کیفیت داده، هزینه اجرا و آمادگی زیرساخت برای تحلیل و کاربردهای هوش مصنوعی.
+        اعداد این صفحه از دو گزارش با snapshotهای مستقل استخراج شده‌اند؛ بنابراین هر مجموعه آمار با زمان و دامنه خودش نمایش داده می‌شود.
+      </p>
+<div class="hero-meta">
+<span class="pill">داخلی · محرمانه</span>
+<span class="pill good">۴٬۸۱۹ پیام برچسب‌گذاری شده</span>
+<span class="pill warn">گردآوری وب‌سایت هنوز کامل نیست</span>
+<span class="pill">فقط داده تجمیعی و مستعار</span>
+</div>
+</section>
+<div class="notice">
+<strong>نکته مهم درباره دامنه گزارش:</strong>
+      تکمیل برچسب‌گذاری ۴٬۸۱۹ پیام به معنی تکمیل خزش وب‌سایت نیست. همچنین اعداد ممیزی Phase 1 از snapshot قدیمی‌تر پایگاه داده به دست آمده‌اند و نباید با checkpoint بعدی به‌عنوان یک اندازه‌گیری واحد جمع یا مقایسه مستقیم شوند.
+    </div>
+<section class="section" id="manager-summary">
+<div class="section-head">
+<div><h2>۱. خلاصه مدیریتی: وضعیت واقعی پروژه</h2><p>اگر فقط چند دقیقه برای مرور گزارش وقت دارید، از این بخش شروع کنید.</p></div>
+<span class="section-tag">MANAGEMENT VIEW</span>
+</div>
+<div class="manager-intro">
+<h2>جمع‌بندی در یک جمله</h2>
+<p>
+          زیرساخت جمع‌آوری و ذخیره‌سازی داده بررسی شده، یک snapshot از پیام‌ها آماده و ۴٬۸۱۹ پیام به‌صورت خودکار برچسب‌گذاری شده و چند تحلیل توصیفی روی آن انجام شده است؛ اما پوشش وب‌سایت هنوز پایین است، بیشتر پیام‌ها به بازبینی انسانی نیاز دارند و دقت مدل هنوز با داده انسانی سنجیده نشده است. بنابراین خروجی فعلی برای تحلیل داخلی و پایلوت محدود مناسب است، نه برای تصمیم‌گیری خودکار یا محصول عملیاتی.
+        </p>
+</div>
+<div class="grid kpi-grid">
+<article class="kpi">
+<div class="kpi-label">کار تکمیل‌شده در برچسب‌گذاری</div>
+<div class="kpi-value">100%</div>
+<div class="kpi-sub good-text">۴٬۸۱۹ از ۴٬۸۱۹ پیام برچسب دارند</div>
+</article>
+<article class="kpi">
+<div class="kpi-label">نیاز به بازبینی انسانی</div>
+<div class="kpi-value">76.5%</div>
+<div class="kpi-sub amber-text">۳٬۶۸۵ پیام در صف بررسی</div>
+</article>
+<article class="kpi">
+<div class="kpi-label">موفقیت صفحات در checkpoint خزش</div>
+<div class="kpi-value">2.47%</div>
+<div class="kpi-sub">۱٬۱۰۹ صفحه موفق از ۴۴٬۸۴۸ URL داخل محدوده</div>
+</article>
+<article class="kpi">
+<div class="kpi-label">هزینه محاسبه‌شده اجرای برچسب‌گذاری</div>
+<div class="kpi-value">$2.78</div>
+<div class="kpi-sub good-text">پایین‌تر از سقف مجاز ۵ دلار</div>
+</article>
+</div>
+<div class="grid two-col" style="margin-top:14px">
+<div class="panel">
+<h3>چه چیزی اکنون در اختیار پروژه است؟</h3>
+<ul class="list">
+<li>یک مخزن SQLite فعال با سلامت ساختاری تأییدشده در ممیزی Phase 1.</li>
+<li>یک checkpoint بعدی خزش با فهرست URLها، وضعیت صف و وضعیت صفحه‌بندی.</li>
+<li>یک snapshot آماده از ۴٬۸۱۹ پیام با برچسب نقش مشارکت و دسته محتوایی.</li>
+<li>آمار تجمیعی مشارکت‌کنندگان مستعار، صف بازبینی، confidence و هزینه اجرا.</li>
+<li>گزارش‌های فنی و اسکریپت‌های خلاصه‌سازی، export و بازسازی تحلیل.</li>
+</ul>
+</div>
+<div class="panel">
+<h3>چه چیزی هنوز در اختیار پروژه نیست؟</h3>
+<ul class="list">
+<li>نسخه کامل و نماینده از محتوای کل وب‌سایت؛ بخش عمده URLهای داخل محدوده هنوز pending است.</li>
+<li>مجموعه مرجع برچسب‌گذاری‌شده توسط انسان برای اندازه‌گیری دقت مدل.</li>
+<li>جدول تحلیلی نرمال‌شده و قابل اتکا از پست، نویسنده و تاریخ انتشار.</li>
+<li>ارزیابی معتبر برای تشخیص تخصص، اعتبار پزشکی، نفوذ کاربران یا رفتار تجاری.</li>
+<li>دستیار RAG تولیدی یا سیستم تصمیم‌گیری خودکار تأییدشده.</li>
+</ul>
+</div>
+</div>
+</section>
+<section class="section" id="report-pages"><div class="section-head"><div><h2>بخش‌های گزارش را جداگانه باز کنید</h2><p>هر موضوع در صفحه مستقل قرار گرفته تا مرور و ارائه آن ساده‌تر باشد.</p></div><span class="section-tag">REPORT SECTIONS</span></div><div class="page-index-grid"><a class="page-index-card" href="#/work"><strong>کارهای انجام‌شده</strong><span>مراحل اجرایی، خروجی‌ها و وضعیت تکمیل هر کار</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/analysis"><strong>فهرست تحلیل‌ها</strong><span>تمام تحلیل‌های موجود، داده‌ها، یافته‌ها و محدودیت‌ها</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/collection"><strong>خزش و پوشش داده</strong><span>پیشرفت crawl، pagination و وضعیت URLها</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/participation"><strong>مشارکت کاربران</strong><span>نقش‌های مشاهده‌شده و آمار مشارکت</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/content"><strong>محتوا و بازبینی انسانی</strong><span>طبقه‌بندی محتوا، confidence و صف بازبینی</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/foundation"><strong>پایگاه داده و آمادگی AI</strong><span>ممیزی SQLite، کیفیت داده و آمادگی RAG/AI</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/decisions"><strong>نتایج و تصمیم‌ها</strong><span>برداشت مدیریتی، ریسک‌ها و اولویت‌های بعدی</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/roadmap"><strong>هزینه و نقشه راه</strong><span>هزینه اجرا، بازتولید و برنامه پیشنهادی ادامه کار</span><em>ورود به صفحه ←</em></a></div></section>
+</article><article class="site-page" id="page-work" data-page="work" aria-label="کارهای انجام‌شده">
+<section class="page-hero"><div class="eyebrow">گزارش مدیریتی نی‌نی‌سایت · صفحه 2 از 9</div><h1>کارهای انجام‌شده و خروجی‌های تحویل‌شده</h1><p>شرح فعالیت‌های اجرایی از ممیزی پایگاه داده و خزش تا آماده‌سازی پیام‌ها، برچسب‌گذاری و گزارش‌دهی.</p><div class="page-hero-meta"><span>داخلی · محرمانه</span><span>۱۸ نوامبر ۲۰۲۶</span><span>شواهد و آمار در دامنه هر snapshot</span></div></section>
+<section class="section" id="work-done">
+<div class="section-head">
+<div><h2>۲. چه کارهایی انجام شده است؟</h2><p>شرح کار به زبان اجرایی: فعالیت، خروجی قابل تحویل و ارزش آن برای پروژه</p></div>
+<span class="section-tag">COMPLETED WORK</span>
+</div>
+<div class="manager-grid">
+<article class="manager-card">
+<div class="step">۱</div><h3>بررسی زیرساخت و پایگاه داده</h3>
+<p>پایگاه SQLite فعال، schema، جدول‌ها، ارتباط‌ها، indexها، کد خزنده و مسیرهای ذخیره‌سازی بررسی شدند. ممیزی بدون تغییر داده اصلی انجام شد.</p>
+<span class="result">خروجی: فهرست ۱۵ جدول کاربردی، فرهنگ داده، گزارش سلامت و manifest ممیزی</span>
+</article>
+<article class="manager-card">
+<div class="step">۲</div><h3>جمع‌آوری و ثبت وضعیت خزش</h3>
+<p>وضعیت URLهای کشف‌شده، صفحه‌های موفق، صف باقی‌مانده، خطاها و صفحه‌بندی در یک checkpoint سازگار ثبت شد. اجرای خزش همچنان باز است.</p>
+<span class="result">خروجی: ۵۹٬۸۷۹ URL کشف‌شده و ۱٬۱۰۹ صفحه HTML/JSON موفق در checkpoint گزارش‌شده</span>
+</article>
+<article class="manager-card">
+<div class="step">۳</div><h3>آماده‌سازی داده پیام‌ها</h3>
+<p>رکوردهای قابل استفاده از SQLite به snapshot پیام تبدیل شدند؛ پیام‌ها بر اساس هویت پیام از تکرار پاک شدند، نقل‌قول و امضا حذف شد و de-identification خودکار انجام شد.</p>
+<span class="result">خروجی: ۴٬۸۱۹ پیام آماده برچسب‌گذاری و ۶۰۵ رکورد صفحه موضوعی گزارش‌شده</span>
+</article>
+<article class="manager-card">
+<div class="step">۴</div><h3>طراحی و اجرای طبقه‌بندی دوگانه</h3>
+<p>دو نوع برچسب تولید شد: نقش قابل مشاهده در مشارکت و دسته محتوایی پیام. دسته‌های محتوا چندبرچسبی‌اند و موضوعات حساس برای بررسی علامت‌گذاری می‌شوند.</p>
+<span class="result">خروجی: ۴٬۸۱۹ پیام برچسب‌گذاری‌شده؛ ۸ نقش و ۱۸ دسته بازبینی محتوا</span>
+</article>
+<article class="manager-card">
+<div class="step">۵</div><h3>کنترل هزینه و اجرای قابل بازیابی</h3>
+<p>درخواست‌ها به‌صورت microbatch قابل ادامه اجرا شدند؛ usage ثبت شد، سقف هزینه سمت کلاینت کنترل شد و خروجی‌های ناسازگار checkpoint و دوباره اجرا شدند.</p>
+<span class="result">خروجی: ۶۴۵ درخواست گزارش‌شده، ۲٫۷۸۴۳۰۷ دلار هزینه محافظه‌کارانه</span>
+</article>
+<article class="manager-card">
+<div class="step">۶</div><h3>تحلیل و گزارش‌دهی</h3>
+<p>گزارش پوشش خزش، مشارکت، محتوای پیام‌ها، اعتماد مدل، صف بازبینی، هزینه، کیفیت داده و آمادگی قابلیت‌های تحلیلی تهیه شد.</p>
+<span class="result">خروجی: گزارش مدیریتی، گزارش ممیزی فنی، آمار تجمیعی و نقشه راه پیشنهادی</span>
+</article>
+</div>
+<div class="section-head" style="margin-top:22px">
+<div><h2 style="font-size:16px">وضعیت کارها به تفکیک میزان تکمیل</h2><p>تکمیل یک مرحله به معنی تکمیل کل زنجیره نیست.</p></div>
+</div>
+<div class="table-wrap">
+<table class="work-table">
+<thead><tr><th>حوزه کاری</th><th>کار انجام‌شده</th><th>خروجی / مدرک</th><th>وضعیت</th></tr></thead>
+<tbody>
+<tr><td>ممیزی SQLite</td><td>بررسی schema، روابط، indexها، سلامت و اندازه پایگاه داده</td><td>۱۵ جدول، integrity=OK، صفر foreign-key violation</td><td><span class="status-label status-done">انجام شده</span></td></tr>
+<tr><td>خزش وب‌سایت</td><td>کشف URL، دریافت صفحه، صف پایدار و ثبت pagination در checkpoint</td><td>۱٬۱۰۹ صفحه موفق؛ ۴۳٬۲۴۱ URL pending/processing</td><td><span class="status-label status-partial">در حال انجام</span></td></tr>
+<tr><td>استخراج محتوای اولیه</td><td>استخراج متن صفحه‌ها و شناسایی زیرمجموعه موضوع/کلینیک</td><td>۴۹۰ صفحه محتوایی و ۱۵۶ صفحه کاندید مرتبط در ممیزی اولیه</td><td><span class="status-label status-done">ممیزی انجام شده</span></td></tr>
+<tr><td>آماده‌سازی پیام</td><td>deduplication، حذف quote/signature و de-identification خودکار</td><td>۴٬۸۱۹ پیام آماده در snapshot برچسب‌گذاری</td><td><span class="status-label status-done">انجام شده</span></td></tr>
+<tr><td>برچسب‌گذاری خودکار</td><td>تولید برچسب نقش و دسته محتوایی با taxonomy مصوب</td><td>۴٬۸۱۹ از ۴٬۸۱۹ پیام برچسب دارند</td><td><span class="status-label status-done">انجام شده</span></td></tr>
+<tr><td>اعتبارسنجی انسانی مدل</td><td>ساخت مجموعه مرجع انسانی و سنجش خطا</td><td>هنوز مجموعه ارزیابی adjudicated وجود ندارد</td><td><span class="status-label status-pending">انجام نشده</span></td></tr>
+<tr><td>لایه تحلیلی پست/کاربر</td><td>نرمال‌سازی شناسه پست، نویسنده و تاریخ انتشار</td><td>شناسه و تاریخ خام تا حدی در HTML قابل بازیابی است؛ جدول نرمال‌شده موجود نیست</td><td><span class="status-label status-partial">نیازمند توسعه</span></td></tr>
+<tr><td>RAG و retrieval</td><td>وجود FTS5 و شناسایی corpus کاندید</td><td>ارزیابی محدود پیشنهاد شده؛ embedding و RAG تولیدی اجرا نشده</td><td><span class="status-label status-partial">آمادگی اولیه</span></td></tr>
+<tr><td>تحلیل نفوذ / اعتبار</td><td>فقط شمارش مشارکت مشاهده‌شده</td><td>شواهد exposure، تعامل، تخصص تأییدشده و برچسب مرجع وجود ندارد</td><td><span class="status-label status-pending">آماده نیست</span></td></tr>
+</tbody>
+</table>
+</div>
+<div class="notice">
+<strong>تفسیر وضعیت:</strong> «انجام شده» یعنی همان خروجی محدود و مشخص تولید و گزارش شده است. «در حال انجام» یعنی pipeline یا صف هنوز باز است. «آمادگی اولیه» یعنی برخی اجزای پایه وجود دارد، اما قابلیت نهایی ساخته یا اعتبارسنجی نشده است.
+      </div>
+</section>
+</article><article class="site-page" id="page-analysis" data-page="analysis" aria-label="فهرست تحلیل‌ها">
+<section class="page-hero"><div class="eyebrow">گزارش مدیریتی نی‌نی‌سایت · صفحه 3 از 9</div><h1>چه تحلیل‌هایی انجام شده‌اند؟</h1><p>فهرست تحلیل‌ها، سؤال هر تحلیل، داده مورد استفاده، نتیجه اصلی و محدودیت تفسیر آن.</p><div class="page-hero-meta"><span>داخلی · محرمانه</span><span>۱۸ نوامبر ۲۰۲۶</span><span>شواهد و آمار در دامنه هر snapshot</span></div></section>
+<section class="section" id="analysis-map">
+<div class="section-head">
+<div><h2>۳. چه تحلیل‌هایی انجام شده است؟</h2><p>نقشه تحلیل‌ها: سؤال هر تحلیل، داده مورد استفاده، نتیجه و محدودیت آن</p></div>
+<span class="section-tag">ANALYSIS INVENTORY</span>
+</div>
+<div class="table-wrap">
+<table class="analysis-table" data-searchable="">
+<thead><tr><th>نوع تحلیل</th><th>چه چیزی بررسی شده؟</th><th>مهم‌ترین نتیجه</th><th>محدودیت / کاربرد مجاز</th></tr></thead>
+<tbody>
+<tr><td>تحلیل پوشش خزش</td><td>تعداد URL کشف‌شده، URL داخل محدوده، صفحات موفق، pending، خطا و pagination</td><td>۴۴٬۸۴۸ URL داخل محدوده؛ ۱٬۱۰۹ صفحه موفق؛ پوشش موفق ۲٫۴۷۲۸٪</td><td>نمونه کامل یا نماینده کل سایت نیست؛ برای برنامه‌ریزی ادامه خزش استفاده شود.</td></tr>
+<tr><td>تحلیل نقش مشارکت</td><td>پرسش، تجربه‌گویی، توصیه، حمایت، منبع، تبلیغ، سایر و شواهد ناکافی</td><td>تجربه‌گویی ۱٬۱۵۸؛ توصیه ۱٬۰۰۳؛ پرسش‌گری ۸۹۱ پیام گزارش شده است.</td><td>نقش‌ها رفتار مشاهده‌شده‌اند، نه شخصیت، تخصص یا نفوذ. جمع ردیف‌ها با تعداد کل پیام‌ها تطبیق ندارد.</td></tr>
+<tr><td>تحلیل محتوای پیام</td><td>گفتگوی معمول، آموزش سلامت، روابط، ایمنی، آزار، تهدید، خودآسیبی، ادعای پزشکی، تبلیغ و زمینه ناکافی</td><td>۶۷٫۲٪ گفتگوی معمول؛ ۷٪ آموزش سلامت؛ ۲۰٪ زمینه ناکافی</td><td>طبقه‌بندی چندبرچسبی و خروجی مدل است؛ پرچم ایمنی به معنی وقوع قطعی یا نتیجه حقوقی نیست.</td></tr>
+<tr><td>تحلیل عدم‌قطعیت</td><td>confidence خوداظهاری، شواهد ناکافی و پیشنهاد تصمیم مدل</td><td>۳٬۳۶۰ پیام confidence کمتر از ۰٫۷۵؛ ۳٬۶۸۵ پیام در صف بازبینی</td><td>confidence کالیبره نیست و دقت مدل را نشان نمی‌دهد؛ اولویت‌بندی بازبینی را پشتیبانی می‌کند.</td></tr>
+<tr><td>تحلیل هزینه و provenance</td><td>تعداد درخواست، توکن ورودی/خروجی، مدل گزارش‌شده و سقف هزینه</td><td>۶۴۵ درخواست؛ ۱٬۲۹۷٬۰۳۱ توکن ورودی؛ ۳۷۱٬۸۱۹ خروجی؛ هزینه ۲٫۷۸۴۳۰۷ دلار</td><td>محاسبه محافظه‌کارانه کلاینت است، نه invoice؛ alias پاسخ نسخه دقیق مدل را تأیید نمی‌کند.</td></tr>
+<tr><td>ممیزی schema و سلامت</td><td>جدول‌ها، ستون‌ها، کلیدها، indexها، FTS5، integrity و foreign key</td><td>۱۵ جدول کاربردی؛ ۲۰۶٫۲۵ MiB؛ integrity=OK؛ صفر نقض foreign key</td><td>سلامت فنی پایگاه داده، به معنی کامل‌بودن داده یا آماده‌بودن تحلیل نیست.</td></tr>
+<tr><td>تحلیل کیفیت و حریم خصوصی</td><td>تکرار متن/موجودیت، نشانه‌های اطلاعات خصوصی، encoding، تاریخ و اتصال صفحه</td><td>۱۷ ردیف تکراری متن؛ ۶۲ مورد اضافه canonical؛ ۶۰ شکاف اتصال؛ تاریخ جلالی خام قابل بازیابی</td><td>موارد privacy فقط نامزدهای الگو هستند و باید در لایه مشتق‌شده بررسی و redacted شوند.</td></tr>
+<tr><td>تحلیل فعالیت و زمان</td><td>پاسخ‌های قابل بازیابی از HTML، نویسنده و تاریخ نمایشی</td><td>۱٬۲۲۱ شناسه پاسخ؛ ۱٬۲۱۷ متن غیرخالی؛ ۶۶۸ مشارکت‌کننده مستعار در ممیزی اولیه</td><td>جدول normalized post/user و تاریخ ISO وجود ندارد؛ رشد ماهانه یا تعامل کل سایت قابل ادعا نیست.</td></tr>
+<tr><td>ارزیابی آمادگی AI</td><td>تحلیل کاربران، segmentation، KOL، اعتبار پزشکی، trend، personalization و RAG</td><td>هوشمندی محتوای پایه آماده؛ RAG و segmentation آمادگی نسبی؛ KOL و اعتبار آماده نیستند.</td><td>ارزیابی آمادگی است، نه اثبات اینکه این محصولات ساخته یا در محیط عملیاتی اجرا شده‌اند.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="grid two-col" style="margin-top:14px">
+<div class="panel">
+<h3>تفاوت دو نوع تحلیل</h3>
+<p><strong>تحلیل گزارش برچسب‌گذاری:</strong> روی ۴٬۸۱۹ پیام snapshot جدیدتر انجام شده و درباره نقش مشارکت، موضوع محتوایی، confidence، صف بازبینی و هزینه اجرای مدل صحبت می‌کند.</p>
+<p><strong>ممیزی Phase 1:</strong> روی snapshot قدیمی‌تر SQLite انجام شده و ساختار پایگاه داده، محتوای صفحه‌ها، کیفیت، حریم خصوصی، تاریخ‌ها و آمادگی معماری را بررسی می‌کند.</p>
+</div>
+<div class="panel">
+<h3>چرا اعداد دو گزارش با هم فرق دارند؟</h3>
+<p>گزارش‌ها در زمان‌های متفاوت و با دامنه و مخرج متفاوت تهیه شده‌اند. مثلاً ممیزی اولیه ۴۹۹ پاسخ ذخیره‌شده و ۴۹۰ صفحه HTML/JSON را گزارش می‌کند؛ checkpoint بعدی ۱٬۱۰۹ صفحه موفق را ثبت کرده است.</p>
+<p>در ممیزی اولیه پوشش ۳٫۳۲٪ با تعریف و مخرج همان گزارش آمده؛ در checkpoint بعدی پوشش موفق صفحه ۲٫۴۷۲۸٪ از URLهای داخل محدوده گزارش شده است. این دو درصد مقایسه مستقیم نیستند.</p>
+</div>
+</div>
+</section>
+</article><article class="site-page" id="page-collection" data-page="collection" aria-label="پوشش خزنده">
+<section class="page-hero"><div class="eyebrow">گزارش مدیریتی نی‌نی‌سایت · صفحه 4 از 9</div><h1>وضعیت جمع‌آوری داده و پوشش وب‌سایت</h1><p>شاخص‌های کلیدی، تفاوت snapshotها، URLهای کشف‌شده، صفحات موفق، صف باقی‌مانده و وضعیت صفحه‌بندی.</p><div class="page-hero-meta"><span>داخلی · محرمانه</span><span>۱۸ نوامبر ۲۰۲۶</span><span>شواهد و آمار در دامنه هر snapshot</span></div></section>
+<section class="section" id="technical-dashboard">
+<div class="section-head">
+<div><h2>شاخص‌های عددی تفصیلی</h2><p>پس از مرور کارهای انجام‌شده و تحلیل‌ها، در این بخش وارد جزئیات عددی و شواهد فنی می‌شویم.</p></div>
+<span class="section-tag">LABELING SNAPSHOT</span>
+</div>
+<div class="grid kpi-grid">
+<article class="kpi">
+<div class="kpi-label">پیام‌های آماده و برچسب‌گذاری‌شده</div>
+<div class="kpi-value">4,819 / 4,819</div>
+<div class="kpi-sub good-text">۱۰۰٪ تکمیل · بدون مورد باقی‌مانده</div>
+<div class="mini-line"><span style="width:100%"></span></div>
+</article>
+<article class="kpi">
+<div class="kpi-label">صف بازبینی انسانی</div>
+<div class="kpi-value">3,685</div>
+<div class="kpi-sub amber-text">۷۶٫۵٪ از کل پیام‌ها</div>
+<div class="mini-line"><span style="width:76.5%;background:#c18a32"></span></div>
+</article>
+<article class="kpi">
+<div class="kpi-label">مشارکت‌کنندگان دارای نقش مشاهده‌شده</div>
+<div class="kpi-value">1,997</div>
+<div class="kpi-sub">فقط بر اساس پیام‌های ثبت‌شده در snapshot</div>
+</article>
+<article class="kpi">
+<div class="kpi-label">هزینه محافظه‌کارانه محاسبه‌شده</div>
+<div class="kpi-value">$2.7843</div>
+<div class="kpi-sub">از سقف مجاز ۵ دلار · مبلغ دقیق ۲٫۷۸۴۳۰۷ دلار</div>
+<div class="mini-line"><span style="width:55.7%"></span></div>
+</article>
+</div>
+</section>
+<section class="section">
+<div class="section-head"><div><h2>سه مجموعه شواهد با دامنه مستقل</h2><p>برای جلوگیری از اختلاط مخرج‌ها و snapshotها</p></div></div>
+<div class="grid three-col">
+<article class="snapshot">
+<div class="snapshot-top"><h3>طبقه‌بندی پیام‌ها</h3><span class="tag teal">۴٬۸۱۹ پیام</span></div>
+<p>خروجی آماده‌شده برای تحلیل نقش‌های مشارکت و دسته‌بندی محتوایی. ۶۰۵ رکورد صفحه موضوعی در گزارش تحویل ثبت شده است.</p>
+<div class="metric-list">
+<div class="metric"><b>4,819</b><span>پیام برچسب‌گذاری‌شده</span></div>
+<div class="metric"><b>605</b><span>رکورد صفحه موضوعی ثبت‌شده در گزارش تحویل</span></div>
+<div class="metric"><b>1,997</b><span>مشارکت‌کننده مستعار</span></div>
+<div class="metric"><b>3,685</b><span>نیازمند بازبینی انسانی</span></div>
+<div class="metric"><b>645</b><span>درخواست API گزارش‌شده</span></div>
+</div>
+<p class="footnote">عدد ۶۰۵، رکورد صفحه موضوعی در گزارش طبقه‌بندی است؛ با ۱۵۶ صفحه موضوع/کلینیک در ممیزی Phase 1 یک واحد یا snapshot مشترک ندارد و نباید نسبت مستقیم از آن‌ها محاسبه شود.</p>
+</article>
+<article class="snapshot">
+<div class="snapshot-top"><h3>checkpoint پوشش خزش</h3><span class="tag amber">۱۰:۵۸ UTC</span></div>
+<p>snapshot سازگار SQLite در ۱۸ نوامبر ۲۰۲۶، ساعت ۱۰:۵۸:۰۶ UTC؛ مستقل از پایگاه داده زنده‌ای که ممکن است بعداً رشد کرده باشد.</p>
+<div class="metric-list">
+<div class="metric"><b>59,879</b><span>URL کشف‌شده یکتا</span></div>
+<div class="metric"><b>44,848</b><span>URL داخل محدوده</span></div>
+<div class="metric"><b>1,109</b><span>صفحه HTML / JSON موفق</span></div>
+<div class="metric"><b>43,241</b><span>در انتظار / در حال پردازش</span></div>
+</div>
+</article>
+<article class="snapshot">
+<div class="snapshot-top"><h3>ممیزی پایگاه داده Phase 1</h3><span class="tag">snapshot قدیمی‌تر</span></div>
+<p>ممیزی فقط‌خواندنی با شواهد ثبت‌شده در بازه ۰۵:۱۰ تا ۰۷:۳۷ UTC و آخرین به‌روزرسانی صف در ۰۷:۵۱ UTC.</p>
+<div class="metric-list">
+<div class="metric"><b>206.25 MiB</b><span>اندازه SQLite فعال</span></div>
+<div class="metric"><b>499</b><span>پاسخ ذخیره‌شده</span></div>
+<div class="metric"><b>490</b><span>صفحه HTML / JSON</span></div>
+<div class="metric"><b>14,277</b><span>URL در انتظار در آن snapshot</span></div>
+</div>
+</article>
+</div>
+</section>
+<section class="section" id="crawl">
+<div class="section-head">
+<div><h2>پوشش گردآوری و محدوده تکمیل‌نشده</h2><p>checkpoint مورخ ۱۸ نوامبر ۲۰۲۶، ساعت ۱۰:۵۸:۰۶ UTC</p></div>
+<span class="section-tag">CRAWL STATUS</span>
+</div>
+<div class="grid two-col">
+<div class="panel">
+<h3>وضعیت URLهای داخل محدوده</h3>
+<div class="metric-list">
+<div class="metric"><b>44,848</b><span>URL کشف‌شده داخل محدوده</span></div>
+<div class="metric"><b>1,125</b><span>URL تکمیل‌شده با احتساب منابع</span></div>
+<div class="metric"><b>1,109</b><span>صفحه HTML / JSON موفق</span></div>
+<div class="metric"><b>43,241</b><span>در انتظار یا در حال پردازش</span></div>
+<div class="metric"><b>24</b><span>ناموفق</span></div>
+<div class="metric"><b>458</b><span>ردشده (Skipped)</span></div>
+<div class="metric"><b>0</b><span>مسدودشده (Blocked)</span></div>
+<div class="metric"><b>59,879</b><span>کل URLهای کشف‌شده یکتا</span></div>
+</div>
+<p class="footnote">تعداد URLهای خارج از محدوده برابر با ۱۵٬۰۳۱ است (اختلاف کل کشف‌شده و داخل محدوده)؛ این عدد محاسبه‌شده از دو مقدار گزارش‌شده است، نه یک فیلد مستقل گزارش.</p>
+</div>
+<div class="panel">
+<h3>نسبت پوشش در snapshot جدیدتر</h3>
+<div class="progress-row">
+<div class="progress-label"><span>تکمیل URLها با احتساب منابع</span><b>2.5085%</b></div>
+<div class="progress-track"><div class="progress-fill" style="width:2.5085%"></div></div>
+</div>
+<div class="progress-row">
+<div class="progress-label"><span>صفحات HTML / JSON موفق</span><b>2.4728%</b></div>
+<div class="progress-track"><div class="progress-fill" style="width:2.4728%;background:#4d78a8"></div></div>
+</div>
+<div class="notice red" style="margin-bottom:0">
+<strong>نتیجه:</strong> پوشش موفق صفحه‌ها هنوز حدود ۲٫۴۷٪ از URLهای داخل محدوده است. خزش نباید کامل یا نماینده کل وب‌سایت معرفی شود.
+          </div>
+</div>
+</div>
+<div class="grid two-col" style="margin-top:14px">
+<div class="panel">
+<h3>وضعیت صفحه‌بندی موضوع‌ها</h3>
+<div class="metric-list">
+<div class="metric"><b>516</b><span>دنباله صفحه‌بندی شناسایی‌شده</span></div>
+<div class="metric"><b>106</b><span>دنباله پوشش‌داده‌شده</span></div>
+<div class="metric"><b>14</b><span>موضوع با هر ۱۰ صفحه</span></div>
+<div class="metric"><b>63</b><span>موضوع کوتاه‌تر و کامل</span></div>
+<div class="metric"><b>6,149</b><span>موضوع دارای صفحه‌های الزامیِ مفقود</span></div>
+</div>
+</div>
+<div class="panel">
+<h3>سیاست و محدودیت‌های خزنده</h3>
+<ul class="list">
+<li>حداکثر ۱۰ صفحه برای هر موضوع گفتگو و ۳ صفحه برای سایر فهرست‌ها تنظیم شده است.</li>
+<li>رسیدن به سقف درخواستی یک دنباله، لزوماً به معنی رسیدن به انتهای واقعی وب‌سایت نیست.</li>
+<li>محدودیت کلی عمق یا تعداد کل URL تعریف نشده است.</li>
+<li>خطای HTTP 410 به‌عنوان Gone دائمی ثبت می‌شود؛ timeoutهای موقت با backoff و بازیابی checkpoint مدیریت می‌شوند.</li>
+<li>محدودیت‌های دسترسی دور زده نمی‌شوند.</li>
+<li>به دلیل باقی‌ماندن صف، ممیزی نهایی rediscovery و پایان صفحه‌بندی زنده هنوز انجام نشده است.</li>
+</ul>
+</div>
+</div>
+<div class="notice">
+        ممیزی discovery در checkpoint گزارش می‌کند که وضعیت URLهای داخل محدوده پوشش داده شده، رکورد صف مفقود صفر و حذف مستندنشده صفر است. سلامت SQLite برابر OK و تعداد نقض کلید خارجی صفر گزارش شده است. یک بررسی مرورگر قبلی timeout شد، اما درخواست‌های HTTP بعدی خزنده موفق بودند.
+      </div>
+</section>
+</article><article class="site-page" id="page-participation" data-page="participation" aria-label="مشارکت کاربران">
+<section class="page-hero"><div class="eyebrow">گزارش مدیریتی نی‌نی‌سایت · صفحه 5 از 9</div><h1>تحلیل نقش‌های مشارکت در پیام‌ها</h1><p>نقش‌های قابل مشاهده در پیام‌های جمع‌آوری‌شده و شاخص‌های توصیفی مشارکت‌کنندگان مستعار.</p><div class="page-hero-meta"><span>داخلی · محرمانه</span><span>۱۸ نوامبر ۲۰۲۶</span><span>شواهد و آمار در دامنه هر snapshot</span></div></section>
+<section class="section" id="roles">
+<div class="section-head">
+<div><h2>نقش‌های مشاهده‌شده در مشارکت</h2><p>برچسب‌ها فقط رفتار قابل مشاهده در پیام‌های جمع‌آوری‌شده را توصیف می‌کنند</p></div>
+<span class="section-tag">PARTICIPATION TAXONOMY</span>
+</div>
+<div class="grid two-col">
+<div class="panel">
+<h3>توزیع تعداد پیام در هر نقش</h3>
+<div class="bar-row"><span class="bar-label">تجربه‌گویی</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><b class="bar-value">1,158</b></div>
+<div class="bar-row"><span class="bar-label">ارائه توصیه</span><div class="bar-track"><div class="bar-fill" style="width:86.6%"></div></div><b class="bar-value">1,003</b></div>
+<div class="bar-row"><span class="bar-label">سایر گفتگوها</span><div class="bar-track"><div class="bar-fill" style="width:81.4%"></div></div><b class="bar-value">943</b></div>
+<div class="bar-row"><span class="bar-label">پرسش‌گری</span><div class="bar-track"><div class="bar-fill" style="width:77%"></div></div><b class="bar-value">891</b></div>
+<div class="bar-row"><span class="bar-label">پاسخ حمایتی</span><div class="bar-track"><div class="bar-fill" style="width:54.9%"></div></div><b class="bar-value">636</b></div>
+<div class="bar-row"><span class="bar-label">شواهد ناکافی</span><div class="bar-track"><div class="bar-fill" style="width:69.6%"></div></div><b class="bar-value">806</b></div>
+<div class="bar-row"><span class="bar-label">اشتراک منبع</span><div class="bar-track"><div class="bar-fill" style="width:9%"></div></div><b class="bar-value">104</b></div>
+<div class="bar-row"><span class="bar-label">تبلیغ مشاهده‌شده</span><div class="bar-track"><div class="bar-fill" style="width:2.4%"></div></div><b class="bar-value">28</b></div>
+<p class="footnote">نمودار بر اساس تعداد ثبت‌شده در هر ردیف است؛ نقش‌ها برای افراد می‌توانند تکرار شوند.</p>
+</div>
+<div class="panel">
+<h3>شاخص‌های مشارکت‌کنندگان</h3>
+<div class="metric-list">
+<div class="metric"><b>1,997</b><span>مشارکت‌کننده دارای پیام منتسب</span></div>
+<div class="metric"><b>1</b><span>میانه پیام به‌ازای مشارکت‌کننده</span></div>
+<div class="metric"><b>66</b><span>بیشترین پیام مشاهده‌شده برای یک نفر</span></div>
+<div class="metric"><b>8.4%</b><span>سهم ۱۰ مشارکت‌کننده پرتکرار از پیام‌های منتسب</span></div>
+</div>
+<p>این اعداد فقط تمرکز نمونه جمع‌آوری‌شده را نشان می‌دهند و معیار تعامل کل سایت، نفوذ، اعتبار یا رتبه‌بندی کاربران نیستند.</p>
+<p>تحویل سطح فرد به شمارش نقش‌های مستعار محدود است. دسته‌های حساس سلامت، جنسیت یا خودآسیبی به پروفایل افراد متصل نشده‌اند و نگاشت شناسه‌های منبع محلی باقی مانده است.</p>
+</div>
+</div>
+<div class="table-wrap" style="margin-top:14px">
+<table data-searchable="">
+<thead><tr><th>نقش مشاهده‌شده</th><th class="num">تعداد پیام گزارش‌شده</th><th class="num">تعداد مشارکت‌کننده</th></tr></thead>
+<tbody>
+<tr><td>پرسش‌گری (Question asking)</td><td class="num">891</td><td class="num">622</td></tr>
+<tr><td>اشتراک تجربه (Experience sharing)</td><td class="num">1,158</td><td class="num">586</td></tr>
+<tr><td>ارائه توصیه (Advice offering)</td><td class="num">1,003</td><td class="num">626</td></tr>
+<tr><td>پاسخ حمایتی (Supportive reply)</td><td class="num">636</td><td class="num">428</td></tr>
+<tr><td>اشتراک منبع (Resource sharing)</td><td class="num">104</td><td class="num">56</td></tr>
+<tr><td>تبلیغ مشاهده‌شده (Promotion observed)</td><td class="num">28</td><td class="num">24</td></tr>
+<tr><td>سایر گفتگوها (Conversation other)</td><td class="num">943</td><td class="num">606</td></tr>
+<tr><td>شواهد ناکافی (Insufficient evidence)</td><td class="num">806</td><td class="num">567</td></tr>
+</tbody>
+</table>
+</div>
+<div class="notice red">
+<strong>مورد نیازمند تطبیق:</strong>
+        جمع تعداد پیام‌های هشت ردیف نقش برابر ۵٬۵۶۹ است؛ یعنی ۷۵۰ بیشتر از ۴٬۸۱۹ پیام برچسب‌گذاری‌شده. گزارش توضیح نمی‌دهد که آیا یک پیام می‌تواند چند نقش داشته باشد یا خیر. تا زمان تطبیق این منطق، این ردیف‌ها نباید به‌عنوان یک تقسیم‌بندی انحصاری از کل پیام‌ها تفسیر شوند.
+      </div>
+<p class="small">تعداد مشارکت‌کنندگان هر نقش نیز به دلیل هم‌پوشانی افراد بین نقش‌ها قابل جمع‌زدن برای به‌دست‌آوردن تعداد افراد یکتا نیست.</p>
+</section>
+</article><article class="site-page" id="page-content" data-page="content" aria-label="محتوا و بازبینی">
+<section class="page-hero"><div class="eyebrow">گزارش مدیریتی نی‌نی‌سایت · صفحه 6 از 9</div><h1>دسته‌بندی محتوا، عدم‌قطعیت و بازبینی انسانی</h1><p>نتایج طبقه‌بندی چندبرچسبی محتوا، پرچم‌های بازبینی، confidence و محدودیت‌های اعتبارسنجی مدل.</p><div class="page-hero-meta"><span>داخلی · محرمانه</span><span>۱۸ نوامبر ۲۰۲۶</span><span>شواهد و آمار در دامنه هر snapshot</span></div></section>
+<section class="section" id="content">
+<div class="section-head">
+<div><h2>یافته‌های بازبینی محتوای پیام‌ها</h2><p>طبقه‌بندی چندبرچسبی روی ۴٬۸۱۹ پیام؛ درصدها بر اساس کل پیام‌های برچسب‌خورده‌اند</p></div>
+<span class="section-tag">CONTENT REVIEW</span>
+</div>
+<div class="notice">
+        دسته‌ها می‌توانند هم‌پوشانی داشته باشند؛ بنابراین جمع درصدها الزاماً ۱۰۰٪ نیست. جمع تعداد ردیف‌های محتوایی ۵٬۱۵۴ برچسب است؛ ۳۳۵ برچسب بیشتر از تعداد پیام‌ها که با چندبرچسبی بودن taxonomy سازگار است. آموزش سلامت باروری و جنسی از محتوای اروتیک جدا نگه داشته شده است. صرف بحث درباره رابطه، به‌خودی‌خود محتوای زیان‌بار یا غیرقانونی محسوب نمی‌شود.
+      </div>
+<div class="panel">
+<h3>بیشترین دسته‌های ثبت‌شده</h3>
+<div class="bar-row"><span class="bar-label">گفتگوی معمول</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><b class="bar-value">3,239</b></div>
+<div class="bar-row"><span class="bar-label">زمینه ناکافی</span><div class="bar-track"><div class="bar-fill" style="width:29.8%;background:#c18a32"></div></div><b class="bar-value">964</b></div>
+<div class="bar-row"><span class="bar-label">آموزش سلامت</span><div class="bar-track"><div class="bar-fill" style="width:10.5%"></div></div><b class="bar-value">339</b></div>
+<div class="bar-row"><span class="bar-label">اطلاعات خصوصی حذف‌شده</span><div class="bar-track"><div class="bar-fill" style="width:8.5%;background:#4d78a8"></div></div><b class="bar-value">276</b></div>
+<div class="bar-row"><span class="bar-label">بحث روابط بزرگسالان</span><div class="bar-track"><div class="bar-fill" style="width:4.2%"></div></div><b class="bar-value">135</b></div>
+<div class="bar-row"><span class="bar-label">ادعای پزشکی نیازمند بررسی</span><div class="bar-track"><div class="bar-fill" style="width:2.3%;background:#c18a32"></div></div><b class="bar-value">73</b></div>
+</div>
+<div class="table-wrap" style="margin-top:14px">
+<table data-searchable="">
+<thead><tr><th>دسته بازبینی محتوا</th><th class="num">تعداد پیام</th><th class="num">سهم گزارش‌شده</th></tr></thead>
+<tbody>
+<tr><td>گفتگوی معمول (Ordinary discussion)</td><td class="num">3,239</td><td class="num">67.2%</td></tr>
+<tr><td>آموزش سلامت یا باروری (Health or reproductive education)</td><td class="num">339</td><td class="num">7.0%</td></tr>
+<tr><td>بحث روابط بزرگسالان (Adult relationship discussion)</td><td class="num">135</td><td class="num">2.8%</td></tr>
+<tr><td>بحث جنسی بزرگسالان غیرگرافیکی</td><td class="num">11</td><td class="num">0.2%</td></tr>
+<tr><td>محتوای جنسی صریح بزرگسالان</td><td class="num">0</td><td class="num">0.0%</td></tr>
+<tr><td>بازبینی ایمنی جنسی کودک</td><td class="num">2</td><td class="num">0.0%</td></tr>
+<tr><td>خشونت یا اجبار جنسی</td><td class="num">0</td><td class="num">0.0%</td></tr>
+<tr><td>آزار هدفمند (Targeted harassment)</td><td class="num">42</td><td class="num">0.9%</td></tr>
+<tr><td>نفرت یا توهین هویتی</td><td class="num">0</td><td class="num">0.0%</td></tr>
+<tr><td>تهدید یا خشونت</td><td class="num">22</td><td class="num">0.5%</td></tr>
+<tr><td>بحث خودآسیبی</td><td class="num">15</td><td class="num">0.3%</td></tr>
+<tr><td>تشویق یا دستورالعمل خودآسیبی</td><td class="num">0</td><td class="num">0.0%</td></tr>
+<tr><td>ادعای پزشکی نیازمند راستی‌آزمایی</td><td class="num">73</td><td class="num">1.5%</td></tr>
+<tr><td>دستورالعمل بالقوه خطرناک</td><td class="num">3</td><td class="num">0.1%</td></tr>
+<tr><td>احتمال کلاهبرداری یا فریب</td><td class="num">5</td><td class="num">0.1%</td></tr>
+<tr><td>تبلیغ تجاری</td><td class="num">28</td><td class="num">0.6%</td></tr>
+<tr><td>اطلاعات خصوصی حذف‌شده</td><td class="num">276</td><td class="num">5.7%</td></tr>
+<tr><td>زمینه ناکافی</td><td class="num">964</td><td class="num">20.0%</td></tr>
+</tbody>
+</table>
+</div>
+<p class="footnote">صفر به معنی نبود پرچم مدل در این snapshot است، نه اثبات نبود آن محتوا در کل وب‌سایت. ارجاع‌های مربوط به ایمنی کودک، اجبار، ادعای پزشکی و فریب، صرفاً موارد نیازمند بررسی‌اند و هیچ اتهام یا نتیجه حقوقی/پزشکی درباره فردی ایجاد نمی‌کنند.</p>
+</section>
+<section class="section" id="quality">
+<div class="section-head">
+<div><h2>کیفیت، عدم‌قطعیت و بازبینی انسانی</h2><p>مهم‌ترین محدودیت برای استفاده عملیاتی از خروجی مدل</p></div>
+<span class="section-tag">QUALITY &amp; REVIEW</span>
+</div>
+<div class="grid two-col">
+<div class="panel">
+<h3>محرک‌های صف بازبینی انسانی</h3>
+<div class="metric-list">
+<div class="metric"><b>3,685</b><span>کل پیام‌های صف بازبینی</span></div>
+<div class="metric"><b>3,360</b><span>اعتماد خوداظهاری کمتر از ۰٫۷۵</span></div>
+<div class="metric"><b>964</b><span>زمینه محتوایی ناکافی</span></div>
+<div class="metric"><b>806</b><span>شواهد ناکافی برای نقش مشارکت</span></div>
+<div class="metric"><b>224</b><span>پیشنهاد مدل برای بررسی / محدودسازی</span></div>
+</div>
+<p class="small">این محرک‌ها هم‌پوشان‌اند و نباید با هم جمع شوند.</p>
+</div>
+<div class="panel">
+<h3>توزیع اعتماد خوداظهاری مدل</h3>
+<div class="bar-row"><span class="bar-label">کمتر از ۰٫۵۰</span><div class="bar-track"><div class="bar-fill" style="width:4.3%;background:#bd6861"></div></div><b class="bar-value">207</b></div>
+<div class="bar-row"><span class="bar-label">۰٫۵۰ تا کمتر از ۰٫۷۵</span><div class="bar-track"><div class="bar-fill" style="width:65.4%;background:#c18a32"></div></div><b class="bar-value">3,153</b></div>
+<div class="bar-row"><span class="bar-label">۰٫۷۵ تا ۱٫۰۰</span><div class="bar-track"><div class="bar-fill" style="width:30.3%"></div></div><b class="bar-value">1,459</b></div>
+<p>اعتماد مدل کالیبره نشده است؛ این مقادیر معیار احتمال واقعی صحت طبقه‌بندی نیستند.</p>
+</div>
+</div>
+<div class="grid two-col" style="margin-top:14px">
+<div class="panel">
+<h3>پیشنهاد تصمیم مدل</h3>
+<div class="metric-list">
+<div class="metric"><b>4,595</b><span>پیشنهاد اجازه (Allow)</span></div>
+<div class="metric"><b>224</b><span>پیشنهاد بررسی / محدودسازی</span></div>
+</div>
+<p>مجموع این دو تصمیم برابر ۴٬۸۱۹ است. پیشنهاد Allow به معنی لغو الزام بازبینی انسانی نیست؛ صف بازبینی با اعتماد پایین و شواهد ناکافی گسترده‌تر تعریف شده است.</p>
+</div>
+<div class="panel">
+<h3>چرا خروجی هنوز برای عملیات کافی نیست؟</h3>
+<ul class="list">
+<li>هنوز مجموعه ارزیابی با برچسب انسانی و داوری‌شده تولید نشده است.</li>
+<li>Precision، Recall، نرخ مثبت کاذب و توافق ارزیابان قابل ادعا نیست.</li>
+<li>اصطلاحات محاوره‌ای فارسی، کنایه، طعنه و نبود متن پیام والد می‌توانند نتیجه را تغییر دهند.</li>
+<li>حذف خودکار شناسه‌ها تضمین نمی‌کند که تمام سرنخ‌های هویتی زمینه‌ای حذف شده باشند.</li>
+<li>تصویر، ویدئو، سند پیوندشده، حقیقت ادعا و وضعیت حقوقی در این طبقه‌بندی متنی ارزیابی نشده‌اند.</li>
+</ul>
+</div>
+</div>
+<div class="notice red">
+<strong>گام ضروری بعدی:</strong>
+        یک مجموعه ارزیابی طبقه‌بندی‌شده و داوری‌شده توسط انسان بسازید؛ پیام‌های معمول، پاسخ‌های کم‌اعتماد، آموزش بالینی و تمام کلاس‌های پرچم ایمنی را پوشش دهید. ارزیابی نقش مشارکت و دسته‌بندی محتوا باید جداگانه انجام شود و سپس آستانه‌ها پیش از استفاده عملیاتی بازتنظیم شوند.
+      </div>
+</section>
+</article><article class="site-page" id="page-foundation" data-page="foundation" aria-label="پایگاه داده و AI">
+<section class="page-hero"><div class="eyebrow">گزارش مدیریتی نی‌نی‌سایت · صفحه 7 از 9</div><h1>ممیزی پایگاه داده و آمادگی قابلیت‌های AI</h1><p>وضعیت فنی SQLite، محتوای قابل بازیابی، کیفیت داده و ارزیابی آمادگی قابلیت‌های تحلیلی و هوش مصنوعی.</p><div class="page-hero-meta"><span>داخلی · محرمانه</span><span>۱۸ نوامبر ۲۰۲۶</span><span>شواهد و آمار در دامنه هر snapshot</span></div></section>
+<section class="section" id="phase1">
+<div class="section-head">
+<div><h2>ممیزی پایگاه داده Phase 1</h2><p>گزارش فنی مستقل و snapshot قدیمی‌تر؛ ممیزی فقط‌خواندنی</p></div>
+<span class="section-tag">NS-DAI-P1-20261118-01</span>
+</div>
+<div class="notice">
+        این بخش اعداد گزارش ممیزی اولیه را حفظ می‌کند. در آن snapshot، ۱۶٬۶۲۹ URL در جدول فعال و ۱۴٬۲۷۷ مورد pending ثبت شده بود؛ این اعداد با checkpoint بعدی ۵۹٬۸۷۹ URL و ۴۳٬۲۴۱ مورد pending یکسان نیستند و جایگزین هم نمی‌شوند.
+      </div>
+<div class="grid four-col kpi-grid">
+<article class="kpi"><div class="kpi-label">اندازه پایگاه داده فعال</div><div class="kpi-value">206.25</div><div class="kpi-sub">MiB</div></article>
+<article class="kpi"><div class="kpi-label">جدول‌های کاربردی</div><div class="kpi-value">15</div><div class="kpi-sub">به‌علاوه یک FTS5 virtual table</div></article>
+<article class="kpi"><div class="kpi-label">صفحات HTML / JSON</div><div class="kpi-value">490 / 499</div><div class="kpi-sub">۴۹۹ پاسخ ذخیره‌شده</div></article>
+<article class="kpi"><div class="kpi-label">متن نرمال‌شده یکتای غیرخالی</div><div class="kpi-value">473</div><div class="kpi-sub">از ۴۹۰ صفحه محتوایی</div></article>
+</div>
+<div class="grid two-col" style="margin-top:14px">
+<div class="panel">
+<h3>محتوای قابل بازیابی در ممیزی اولیه</h3>
+<div class="metric-list">
+<div class="metric"><b>156</b><span>صفحه موضوع / کلینیک</span></div>
+<div class="metric"><b>125</b><span>موجودیت محتوایی</span></div>
+<div class="metric"><b>1,221</b><span>شناسه پاسخ متمایز در HTML</span></div>
+<div class="metric"><b>1,217</b><span>پاسخ دارای متن غیرخالی</span></div>
+<div class="metric"><b>668</b><span>مشارکت‌کننده مستعار</span></div>
+<div class="metric"><b>3.32%</b><span>پوشش موفق URL در snapshot ممیزی</span></div>
+</div>
+<p>صفحات پروفایل و ناوبری باید از corpus مربوط به RAG کنار گذاشته شوند. محتوای صفحه‌ای فعلی معادل جدول نرمال‌شده پست نیست.</p>
+</div>
+<div class="panel">
+<h3>سلامت ساختاری پایگاه داده</h3>
+<div class="status-grid">
+<div class="status"><b class="good-text">OK</b><span>SQLite integrity check</span></div>
+<div class="status"><b class="good-text">0</b><span>نقض کلید خارجی</span></div>
+<div class="status"><b>1 + 4</b><span>یک FTS5 virtual و چهار جدول داخلی shadow</span></div>
+</div>
+<p>فایل قبل و بعد از ممیزی SHA-256 یکسان داشت. اتصال با URI read-only، فعال‌سازی query_only، منع عملیات تغییردهنده و یک read transaction انجام شد. در خود ممیزی Phase 1 هیچ تغییر schema یا داده، خزش جدید، embedding یا فراخوانی API/LLM خارجی انجام نشد؛ اجرای مدل برای طبقه‌بندی پیام‌ها متعلق به گزارش و مرحله‌ای جداگانه است.</p>
+<p class="small">SQLite ممکن است sidecarهای خالی WAL/SHM ایجاد کند؛ WAL دارای تراکنش تغییر نکرد.</p>
+</div>
+</div>
+<details open="">
+<summary>فهرست جدول‌های کاربردی و تعداد رکوردها</summary>
+<div class="table-wrap">
+<table data-searchable="">
+<thead><tr><th>جدول</th><th class="num">ردیف</th><th>معنا و کاربرد</th></tr></thead>
+<tbody>
+<tr><td><code>urls</code></td><td class="num">16,629</td><td>ثبت URLهای کشف‌شده، شامل URLهای بازدیدنشده</td></tr>
+<tr><td><code>pages</code></td><td class="num">499</td><td>محتوای صفحه و provenance؛ نه جدول نرمال‌شده پست</td></tr>
+<tr><td><code>links</code></td><td class="num">77,357</td><td>یال‌های کشف و ناوبری؛ نه رویداد تعامل کاربر</td></tr>
+<tr><td><code>crawl_queue</code></td><td class="num">16,629</td><td>وضعیت پردازش URL و استثناهای مستند</td></tr>
+<tr><td><code>pagination_sequences</code></td><td class="num">364</td><td>وضعیت صفحه‌بندی در سطح فهرست</td></tr>
+<tr><td><code>pagination</code></td><td class="num">1,468</td><td>اعضای منطقی صفحه‌بندی و وضعیت خزش</td></tr>
+<tr><td><code>resources</code></td><td class="num">623</td><td>فهرست منابع وابسته، با بدنه دانلودی اختیاری</td></tr>
+<tr><td><code>extracted_data</code></td><td class="num">1,031</td><td>JSON / JSON-LD و snapshotهای rendering متصل به صفحه</td></tr>
+<tr><td><code>http_requests</code></td><td class="num">926</td><td>درخواست‌های خزنده؛ نه بازدید یا تعامل کاربران</td></tr>
+<tr><td><code>crawl_runs</code></td><td class="num">5</td><td>تاریخچه اجرا و import</td></tr>
+<tr><td><code>crawl_errors</code></td><td class="num">1</td><td>خطاهای جمع‌آوری و تشخیص retry</td></tr>
+<tr><td><code>browser_audits</code></td><td class="num">97</td><td>بررسی rendering و رفتار حل‌نشده مرورگر</td></tr>
+<tr><td><code>robots_cache</code></td><td class="num">2</td><td>دستورهای عمومی دسترسی cacheشده</td></tr>
+<tr><td><code>legacy_imports</code></td><td class="num">1</td><td>provenance واردسازی checkpoint قبلی</td></tr>
+<tr><td><code>settings</code></td><td class="num">1</td><td>تنظیمات خزنده</td></tr>
+</tbody>
+</table>
+</div>
+<p class="footnote">مجموع ۱۵ جدول کاربردی است. جدول‌های داخلی FTS5 شامل یک ردیف config، تعداد ۳۴۵ ردیف data، تعداد ۴۹۹ ردیف document-size و ۳۴۲ ردیف index هستند و نباید به مجموع رکوردهای کسب‌وکار اضافه شوند.</p>
+<p>در معماری رابطه‌ای، <code>urls</code> رجیستری هویت URL است؛ <code>pages</code> پاسخ‌های ذخیره‌شده را نگه می‌دارد؛ <code>links</code> URL مبدأ و مقصد را متصل می‌کند؛ صف و pagination وضعیت گردآوری را ثبت می‌کنند؛ resources و extracted_data به URL/صفحه متصل‌اند و جدول‌های عملیاتی به crawl_runs ارجاع می‌دهند. همگام‌سازی FTS از طریق trigger انجام می‌شود، نه foreign key.</p>
+</details>
+<details>
+<summary>معماری خزنده، فایل‌های پایگاه داده و خانواده پاسخ‌ها</summary>
+<p>نقطه ورود فعال <code>main.py</code> است. بسته <code>src/crawler</code> شامل جمع‌آوری HTTP، کشف DOM/JSON، صفحه‌بندی، rendering مرورگر و بازیابی صف است؛ <code>src/database</code> شامل schema SQLite، persistence، import قدیمی و گزارش‌گیری است. بسته قدیمی <code>crawler/</code> و <code>scripts/run_crawl.ps1</code> یک مسیر ingestion جداگانه مبتنی بر PostgreSQL هستند و وجود مدل‌های غنی آن‌ها به معنی وجود همان جدول‌ها در SQLite فعال نیست. <code>scripts/exhaustive_crawl.py</code> نیز checkpoint جداگانه‌ای داشته است. یک import و چهار اجرای خزش متوقف‌شده در پایگاه فعال ثبت شده‌اند.</p>
+<div class="table-wrap">
+<table><thead><tr><th>فایل پایگاه داده</th><th>نقش</th><th class="num">اندازه</th></tr></thead>
+<tbody>
+<tr><td><code>data/crawler_database.sqlite</code></td><td>مخزن فعال انتخاب‌شده توسط main.py و Config</td><td class="num">206.25 MiB</td></tr>
+<tr><td><code>data/backups/before_topic_page_10.sqlite</code></td><td>نسخه پشتیبان پیش از تغییر سیاست صفحه موضوع</td><td class="num">205.70 MiB</td></tr>
+<tr><td><code>data/exhaustive_20261118/state.sqlite</code></td><td>checkpoint قدیمی خزش exhaustive</td><td class="num">49.96 MiB</td></tr>
+<tr><td><code>data/legacy_backups/exhaustive_81d30c8974.sqlite</code></td><td>پشتیبان حفظ‌شده checkpoint قدیمی</td><td class="num">49.96 MiB</td></tr>
+</tbody>
+</table>
+</div>
+<p class="footnote">در snapshot ممیزی اولیه هیچ موضوعی تمام صفحات ۱ تا ۱۰ را نداشت؛ checkpoint جدیدتر ۱۴ موضوع با هر ۱۰ صفحه گزارش می‌کند. این تفاوت با پیشرفت جمع‌آوری و تفاوت زمان snapshot سازگار است و نباید به‌عنوان یک عدد واحد نمایش داده شود.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>خانواده پاسخ</th><th class="num">تعداد</th></tr></thead>
+<tbody>
+<tr><td><code>forum_topic</code></td><td class="num">153</td></tr>
+<tr><td><code>forum_listing</code></td><td class="num">114</td></tr>
+<tr><td><code>member_profile</code></td><td class="num">112</td></tr>
+<tr><td><code>forum_category</code></td><td class="num">57</td></tr>
+<tr><td><code>member_activity_listing</code></td><td class="num">32</td></tr>
+<tr><td><code>discussion_other</code></td><td class="num">14</td></tr>
+<tr><td><code>static_resource</code></td><td class="num">8</td></tr>
+<tr><td><code>other</code></td><td class="num">5</td></tr>
+<tr><td><code>clinic_question</code></td><td class="num">3</td></tr>
+<tr><td><code>sitemap</code></td><td class="num">1</td></tr>
+</tbody>
+</table>
+</div>
+<p>طول متن ۴۹۰ پاسخ محتوایی: حداقل ۲۳۵، میانه ۲٬۷۸۶، صدک ۷۵ برابر ۵٬۶۰۸٫۵، صدک ۹۵ برابر ۷٬۰۱۰٫۸۵ و حداکثر ۱۷٬۳۶۳ کاراکتر. مجموع متن استخراج‌شده ۱٬۶۲۳٬۷۹۲ کاراکتر است. هر ۴۹۰ مورد از نظر heuristic غالباً دارای خط عربی بوده‌اند که با محتوای فارسی سازگار است؛ language detector معتبر اجرا نشده است.</p>
+<p>در تشخیص پاسخ‌ها از selectorهای HTML مانند <code>div#posts &gt; article[id^="post-"]</code> و کلاس‌های <code>.post-message</code>/<code>.postbody</code> استفاده شده است؛ تاریخ نمایشی از <code>.created-post .date</code> و شمارنده بازدید از meta با <code>itemprop="userInteractionCount"</code> بازیابی می‌شود. این‌ها facts مشاهده‌شده HTML هستند، نه ستون‌های نرمال‌شده پایگاه داده.</p>
+</details>
+<details>
+<summary>یافته‌های کیفیت داده، تکرار و حریم خصوصی</summary>
+<div class="table-wrap">
+<table>
+<thead><tr><th>یافته</th><th class="num">شواهد</th><th>پیامد / کنترل پیشنهادی</th></tr></thead>
+<tbody>
+<tr><td>پوشش ناقص</td><td class="num">14,277 pending</td><td>۱۲۲ موجودیت موضوع ثبت‌شده در برابر ۴٬۶۴۶ شناسه موضوع کشف‌شده؛ گزارش پوشش به تفکیک خانواده و موضوع.</td></tr>
+<tr><td>مخلوط‌بودن corpus</td><td class="num">156 / 490</td><td>فقط ۱۵۶ صفحه کاندید محتوای موضوع/کلینیک‌اند؛ پروفایل و ناوبری حذف شوند.</td></tr>
+<tr><td>نامزدهای اطلاعات خصوصی</td><td class="num">2 / 6 / 17 / 16</td><td>به‌ترتیب نامزد شماره موبایل، شناسه ۱۰ رقمی، واژه‌های زمینه آدرس و شناسه شبکه اجتماعی؛ همه نیازمند بررسی و redaction هستند، نه داده تأییدشده.</td></tr>
+<tr><td>تکرار متن نرمال‌شده</td><td class="num">17 مورد اضافه / 13 گروه</td><td>هویت پاسخ خام را از هویت canonical موضوع/صفحه جدا کنید.</td></tr>
+<tr><td>تکرار موجودیت/صفحه canonical</td><td class="num">62 مورد اضافه / 41 گروه</td><td>همه hashهای پاسخ خام متمایز بودند.</td></tr>
+<tr><td>نشانگر جایگزینی U+FFFD</td><td class="num">136 متن استخراجی</td><td>همه موارد علامت‌خورده متعلق به خانواده ناوبری/پروفایل بودند؛ ۳۳۷ پاسخ خام نیز همین نشانگر literal را داشتند.</td></tr>
+<tr><td>تاریخ انتشار تحلیلی</td><td class="num">0 تاریخ ISO</td><td>تاریخ اصلی انتشار در metadata/JSON-LD موجود نبود؛ ۱٬۲۲۱ تاریخ نمایشی جلالی در HTML قابل بازیابی بود.</td></tr>
+<tr><td>شکاف پیوند منطقی</td><td class="num">60 link</td><td>صفحه منبع ثبت شده اما source_page_id تهی است؛ اصلاح فقط در لایه مشتق‌شده.</td></tr>
+</tbody>
+</table>
+</div>
+<p>URL نامعتبر، JSON خراب در داده‌های بررسی‌شده، کلید یکتای تکراری، اجرای دارای end-before-start یا foreign key آویزان مشاهده نشد. از ۴۹۰ پاسخ محتوایی متن استخراجی خالی وجود نداشت؛ ۹ متن خالی مربوط به پاسخ‌های غیرمحتوایی بود. تنها title مفقود متعلق به پاسخ JSON بود، نه سند HTML خالی.</p>
+<p class="small">تخصیص فیزیکی حجم به هر جدول به دلیل نبود dbstat در build این SQLite قابل محاسبه نبود. طول منطقی ستون‌ها، حجم فیزیکی دیسک را نشان نمی‌دهد.</p>
+</details>
+<details>
+<summary>فعالیت بازیابی‌شده و محدودیت زمانی</summary>
+<div class="grid two-col">
+<div>
+<ul class="list">
+<li>جدول نرمال‌شده post/user در schema فعال وجود ندارد.</li>
+<li>۱٬۲۲۱ شناسه پاسخ متمایز در HTML بازیابی شده است.</li>
+<li>۱٬۲۱۷ پاسخ متن غیرخالی و ۱٬۲۲۱ تاریخ خام جلالی دارند.</li>
+<li>در این مرحله هیچ تاریخ انتشار ISO و هیچ شمارنده reply-like استخراج نشده است؛ مقدار مفقود به معنی صفر لایک نیست.</li>
+<li>۱۲۲ موضوع دارای شمارنده بازدید مشاهده‌شده‌اند؛ دامنه ۱ تا ۱۱۴٬۷۲۸ و میانه ۹۷ است.</li>
+</ul>
+</div>
+<div>
+<ul class="list">
+<li>۶۶۸ مشارکت‌کننده مستعار در داده پاسخ‌های قابل استفاده مشاهده شده‌اند.</li>
+<li>این اعداد diagnostic aggregate هستند و جدول جدید پست یا کاربر در SQLite ذخیره نشده است.</li>
+<li>تمام captureها در نوامبر ۲۰۲۶ انجام شده‌اند؛ این تاریخ، زمان ingestion است نه زمان انتشار.</li>
+<li>رشد ماهانه محتوای سایت در این snapshot قابل دفاع نیست؛ مسیر بازیابی تاریخ جلالی به‌عنوان گام بعدی پیشنهاد شده است.</li>
+</ul>
+</div>
+</div>
+</details>
+<details>
+<summary>سیگنال‌های واژه‌نامه‌ای اکتشافی</summary>
+<div class="table-wrap">
+<table>
+<thead><tr><th>سیگنال</th><th class="num">متن صفحه یکتای دارای واژه</th></tr></thead>
+<tbody>
+<tr><td>روابط</td><td class="num">280</td></tr>
+<tr><td>مراقبت از کودک</td><td class="num">275</td></tr>
+<tr><td>بارداری</td><td class="num">229</td></tr>
+<tr><td>اشتغال و آموزش</td><td class="num">172</td></tr>
+<tr><td>دارو</td><td class="num">86</td></tr>
+<tr><td>تغذیه</td><td class="num">84</td></tr>
+</tbody>
+</table>
+</div>
+<p>این تطبیق‌ها هم‌پوشان‌اند و از boilerplate و متن ناوبری تأثیر می‌گیرند؛ بنابراین ویژگی شخصی، تشخیص پزشکی، برآورد شیوع یا topic model محسوب نمی‌شوند.</p>
+</details>
+</section>
+<section class="section" id="readiness">
+<div class="section-head">
+<div><h2>آمادگی قابلیت‌های تحلیلی و هوش مصنوعی</h2><p>ارزیابی بر اساس داده موجود در snapshot ممیزی Phase 1</p></div>
+<span class="section-tag">AI READINESS</span>
+</div>
+<div class="table-wrap">
+<table data-searchable="">
+<thead><tr><th>قابلیت</th><th>وضعیت</th><th>شواهد و پیش‌نیاز</th></tr></thead>
+<tbody>
+<tr><td>تحلیل کاربران</td><td><span class="tag amber">آمادگی نسبی</span></td><td>پاسخ‌ها و شناسه نویسنده قابل بازیابی‌اند؛ facts کاربر/پست و زمان انتشار باید نرمال شوند. session، visit و action event وجود ندارد.</td></tr>
+<tr><td>بخش‌بندی کاربران</td><td><span class="tag amber">آمادگی نسبی</span></td><td>پایلوت محدود فعالیت پس از نرمال‌سازی تاریخ و ارزیابی نمونه ممکن است؛ بُعد طولی اعتبارسنجی‌شده وجود ندارد.</td></tr>
+<tr><td>تشخیص KOL / نفوذ</td><td><span class="tag red">آماده نیست</span></td><td>شمارش مشارکت معادل نفوذ نیست؛ شواهد exposure، تعامل، جمعیت مقایسه و برچسب معتبر موجود نیست.</td></tr>
+<tr><td>هوشمندی محتوا</td><td><span class="tag teal">آمادگی پایه</span></td><td>تحلیل خانواده منبع، کیفیت، کلیدواژه فیلترشده و corpus اکتشافی ممکن است؛ classifier تولیدی نیازمند curate و validation است.</td></tr>
+<tr><td>اعتبار / شواهد پزشکی</td><td><span class="tag red">آماده نیست</span></td><td>مدرک تخصصی، شواهد پزشکی تأییدشده یا نگاشت ادعا به منبع وجود ندارد. محتوای عمومی انجمن، evidence تأییدشده نیست.</td></tr>
+<tr><td>تحلیل روند</td><td><span class="tag amber">آمادگی نسبی</span></td><td>تاریخ خام جلالی قابل بازیابی است؛ زمان انتشار نرمال و پوشش طولی نماینده موجود نیست.</td></tr>
+<tr><td>تجاری / شخصی‌سازی</td><td><span class="tag red">آماده نیست</span></td><td>داده سفارش، impression، click، conversion، exposure یا consent موجود نیست؛ پروفایل علاقه پزشکی نیازمند حاکمیت مستقل است.</td></tr>
+<tr><td>دستیار RAG</td><td><span class="tag amber">آمادگی نسبی</span></td><td>URL منبع، متن استخراجی و FTS5 موجود است؛ ۱۵۶ صفحه موضوع/کلینیک باید فیلتر، redacted، deduplicate، chunk و ارزیابی شوند.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="notice">
+        «آمادگی پایه» فقط به معنی کفایت برای تحلیل توصیفی محدود است، نه آمادگی گسترده تولیدی. در ممیزی Phase 1 هیچ embedding، inference مدل زبانی یا ارزیابی اعتبار بالینی انجام نشده است. ۱٬۰۳۱ ردیف extracted_data نیز معادل ۱٬۰۳۱ موجودیت محتوایی غنی نیست؛ JSON-LD مشاهده‌شده عمدتاً اشیای تکراری WebSite/SearchAction بوده است.
+      </div>
+<div class="panel">
+<h3>تصمیم‌های مدیریتی پیشنهادی</h3>
+<ul class="list">
+<li>یک بسته کاری دو هفته‌ای برای ساخت لایه مشتق‌شده فقط‌خواندنی تصویب شود: هویت canonical، فیلتر corpus، کنترل حریم خصوصی و نرمال‌سازی تاریخ در سطح پست.</li>
+<li>پس از فیلتر و redaction، از FTS5 موجود برای ارزیابی retrieval محدود استفاده شود؛ embedding و LLM خارجی در ممیزی اولیه اجرا نشده‌اند.</li>
+<li>آمار فعالیت و شمارنده بازدید فقط مشاهده نمونه جمع‌آوری‌شده تلقی شوند، نه engagement، رشد، نفوذ یا conversion کل سایت.</li>
+<li>SQLite خام محدود و محافظت‌شده باقی بماند؛ provenance حفظ و projection تحلیلی مجاز جداگانه ساخته شود.</li>
+</ul>
+</div>
+</section>
+</article><article class="site-page" id="page-decisions" data-page="decisions" aria-label="تصمیم‌ها">
+<section class="page-hero"><div class="eyebrow">گزارش مدیریتی نی‌نی‌سایت · صفحه 8 از 9</div><h1>نتایج مدیریتی و تصمیم‌های پیشنهادی</h1><p>معنای نتایج برای تصمیم‌گیری، ریسک‌های اصلی، موارد نیازمند تطبیق و اولویت‌های پیشنهادی.</p><div class="page-hero-meta"><span>داخلی · محرمانه</span><span>۱۸ نوامبر ۲۰۲۶</span><span>شواهد و آمار در دامنه هر snapshot</span></div></section>
+<section class="section" id="decisions">
+<div class="section-head">
+<div><h2>۴. نتایج چه معنایی برای تصمیم مدیریتی دارند؟</h2><p>برداشت درست از اعداد و اقدام پیشنهادی متناسب با هر نتیجه</p></div>
+<span class="section-tag">FINDINGS &amp; DECISIONS</span>
+</div>
+<div class="meaning-grid">
+<article class="meaning">
+<h3>برچسب‌گذاری کامل شده، اما تأیید انسانی نشده است</h3>
+<p>۴٬۸۱۹ پیام برچسب دارند؛ این فقط تکمیل اجرای مدل است. هنوز معلوم نیست چه درصدی از برچسب‌ها درست‌اند، چون مجموعه مرجع انسانی نداریم.</p>
+<span class="takeaway">تصمیم: قبل از استفاده عملیاتی، نمونه انسانی داوری‌شده بسازید.</span>
+</article>
+<article class="meaning">
+<h3>صف بازبینی بالا، الزاماً به معنی خطای مدل نیست</h3>
+<p>۷۶٫۵٪ پیام‌ها در صف‌اند؛ این صف علاوه بر پیشنهاد محدودسازی، اعتماد پایین و شواهد ناکافی را نیز پوشش می‌دهد.</p>
+<span class="takeaway">تصمیم: بازبینی را طبقه‌بندی و برای هر علت، نرخ خطا را جدا اندازه‌گیری کنید.</span>
+</article>
+<article class="meaning">
+<h3>داده جمع‌آوری‌شده هنوز نماینده کل سایت نیست</h3>
+<p>در checkpoint جدیدتر فقط ۲٫۴۷٪ URLهای داخل محدوده به صفحه موفق تبدیل شده‌اند و هزاران موضوع صفحه‌های الزامی مفقود دارند.</p>
+<span class="takeaway">تصمیم: برای توسعه پوشش، اولویت و معیار پایان خزش تعریف کنید.</span>
+</article>
+<article class="meaning">
+<h3>پایگاه داده از نظر ساختاری سالم است، اما نیاز به لایه تحلیلی دارد</h3>
+<p>Integrity و foreign key مشکلی نشان نداده‌اند، اما post/user/date نرمال‌شده وجود ندارد و corpus شامل پروفایل و ناوبری هم هست.</p>
+<span class="takeaway">تصمیم: داده خام را حفظ و یک projection تحلیلی پاک‌سازی‌شده بسازید.</span>
+</article>
+<article class="meaning">
+<h3>تحلیل نقش‌ها یک مورد تطبیق عددی دارد</h3>
+<p>جمع تعداد پیام‌های نقش‌ها ۵٬۵۶۹ است، در حالی که کل پیام‌ها ۴٬۸۱۹ است. گزارش روشن نمی‌کند که برچسب نقش برای هر پیام انحصاری است یا چندگانه.</p>
+<span class="takeaway">تصمیم: تعریف شمارش و امکان هم‌پوشانی را با خروجی خام تطبیق دهید.</span>
+</article>
+<article class="meaning">
+<h3>آمادگی RAG وجود دارد، نه محصول RAG</h3>
+<p>FTS5 و ۱۵۶ صفحه کاندید موضوع/کلینیک در ممیزی اولیه وجود دارد؛ اما پالایش، redaction، ارزیابی retrieval و ساخت دستیار تولیدی انجام نشده است.</p>
+<span class="takeaway">تصمیم: ابتدا یک ارزیابی retrieval محدود و قابل سنجش اجرا کنید.</span>
+</article>
+</div>
+<div class="grid two-col" style="margin-top:14px">
+<div class="panel">
+<h3>مواردی که باید پیش از ارائه عدد نهایی تطبیق شوند</h3>
+<ul class="list">
+<li><strong>نقش مشارکت:</strong> جمع ۸ ردیف نقش ۵٬۵۶۹ است؛ اختلاف ۷۵۰ با تعداد کل پیام‌ها باید از روی داده برچسب‌خورده توضیح داده شود.</li>
+<li><strong>تعداد پیام و صفحه:</strong> ۶۰۵ رکورد صفحه موضوعی در گزارش labeling با ۱۵۶ صفحه موضوع/کلینیک در ممیزی اولیه یکی نیست؛ زمان و تعریف هر کدام باید در داشبورد حفظ شود.</li>
+<li><strong>پوشش خزش:</strong> ۳٫۳۲٪ ممیزی اولیه و ۲٫۴۷۲۸٪ checkpoint بعدی، مخرج و زمان یکسان ندارند.</li>
+<li><strong>دسته‌های محتوایی:</strong> جمع ردیف‌ها ۵٬۱۵۴ است؛ این با چندبرچسبی بودن دسته‌ها سازگار است، اما هرگز نباید به‌عنوان ۵٬۱۵۴ پیام یکتا نمایش داده شود.</li>
+</ul>
+</div>
+<div class="panel">
+<h3>پیشنهاد ترتیب اجرای کارهای بعدی</h3>
+<ol class="list">
+<li>رفع ابهام شمارش نقش‌ها و تثبیت تعریف metricها.</li>
+<li>ساخت نمونه انسانی stratified و اندازه‌گیری precision، recall و خطاها برای هر taxonomy.</li>
+<li>ساخت لایه مشتق‌شده شامل کلید canonical، پست، نویسنده مستعار و تاریخ جلالی نرمال‌شده.</li>
+<li>اعمال قواعد corpus و privacy؛ حذف پروفایل و ناوبری از محتوای RAG.</li>
+<li>اجرای retrieval evaluation محدود روی FTS5 و سپس تصمیم درباره embedding و RAG.</li>
+<li>تعریف هدف پوشش خزش و روش نمونه‌گیری قبل از گسترش collection.</li>
+</ol>
+</div>
+</div>
+<div class="decision-card" style="margin-top:14px">
+<h3>تصمیم پیشنهادی برای مدیر پروژه</h3>
+<p>تأیید یک بسته کاری دو هفته‌ای با تمرکز بر کیفیت داده و اعتبارسنجی، نه توسعه فوری محصول AI:</p>
+<ul class="list">
+<li>مهندس داده: هویت canonical، استخراج پست/نویسنده/تاریخ و تست کیفیت.</li>
+<li>بازبین حریم خصوصی و دامنه: redaction، کنترل دسترسی و بررسی پیام‌های حساس.</li>
+<li>تحلیلگر: تعریف مخرج metricها، ارزیابی bias نمونه و داشبورد پوشش.</li>
+<li>مهندس ML/NLP: ساخت مجموعه ارزیابی انسانی و retrieval evaluation محدود.</li>
+</ul>
+</div>
+</section>
+</article><article class="site-page" id="page-roadmap" data-page="roadmap" aria-label="هزینه و نقشه راه">
+<section class="page-hero"><div class="eyebrow">گزارش مدیریتی نی‌نی‌سایت · صفحه 9 از 9</div><h1>هزینه، قابلیت بازتولید و برنامه ادامه کار</h1><p>جزئیات هزینه و مدل اجرا، روش بازتولید گزارش، برنامه پیشنهادی هفته‌های آینده و محدودیت‌های استفاده.</p><div class="page-hero-meta"><span>داخلی · محرمانه</span><span>۱۸ نوامبر ۲۰۲۶</span><span>شواهد و آمار در دامنه هر snapshot</span></div></section>
+<section class="section" id="cost">
+<div class="section-head">
+<div><h2>هزینه، مدل و قابلیت بازتولید</h2><p>محاسبات محافظه‌کارانه سمت کلاینت؛ نه صورت‌حساب نهایی ارائه‌دهنده</p></div>
+<span class="section-tag">COST &amp; PROVENANCE</span>
+</div>
+<div class="grid four-col kpi-grid">
+<article class="kpi"><div class="kpi-label">سقف مجاز کل</div><div class="kpi-value">$5.00</div><div class="kpi-sub">شامل پایلوت، retry و اجرای افزایشی</div></article>
+<article class="kpi"><div class="kpi-label">هزینه محافظه‌کارانه</div><div class="kpi-value">$2.784307</div><div class="kpi-sub good-text">حدود ۵۵٫۷٪ سقف</div></article>
+<article class="kpi"><div class="kpi-label">درخواست رزرو / گزارش‌شده</div><div class="kpi-value">645 / 645</div><div class="kpi-sub">۰ نگهداشت ناشناخته باقی‌مانده</div></article>
+<article class="kpi"><div class="kpi-label">توکن ورودی / خروجی</div><div class="kpi-value">1.30M / 371.8K</div><div class="kpi-sub">۱٬۲۹۷٬۰۳۱ ورودی و ۳۷۱٬۸۱۹ خروجی</div></article>
+</div>
+<div class="grid two-col" style="margin-top:14px">
+<div class="panel">
+<h3>جزئیات مدل و روش اجرا</h3>
+<div class="table-wrap">
+<table>
+<tbody>
+<tr><th>مدل درخواست‌شده</th><td class="num">deepseek-v4-1-flash-1017</td></tr>
+<tr><th>مدل درج‌شده در پاسخ</th><td class="num">deepseek-flash</td></tr>
+<tr><th>نسخه دقیق سرویس مستقلاً تأیید شده؟</th><td class="danger-text">خیر؛ alias بدون نسخه</td></tr>
+<tr><th>روش batch</th><td>microbatchهای قابل‌ازسرگیری روی chat completions</td></tr>
+<tr><th>درخواست‌های دارای usage گزارش‌شده</th><td class="num">645 از 645</td></tr>
+<tr><th>نگهداشت usage ناشناخته</th><td class="num">0</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="panel">
+<h3>مبنای محاسبه هزینه</h3>
+<ul class="list">
+<li>نرخ محلی ورودی: ۱ دلار به‌ازای هر یک میلیون توکن.</li>
+<li>نرخ محلی خروجی: ۴ دلار به‌ازای هر یک میلیون توکن.</li>
+<li>پیش از هر درخواست، رزرو بر اساس کران بایت ورودی و حداکثر خروجی مجاز انجام می‌شود.</li>
+<li>در صورت ناشناخته‌بودن usage، کل رزرو نگه داشته می‌شود.</li>
+<li>این سقف، کنترل محافظه‌کارانه سمت کلاینت است؛ سقف تحمیلی حساب ارائه‌دهنده یا invoice نیست.</li>
+</ul>
+<p class="small">برای صورتحساب قطعی، گزارش billing درگاه ارائه‌دهنده مرجع است. اجرای پولی دیگری برای بازتولید همین گزارش لازم نیست.</p>
+</div>
+</div>
+<div class="panel" style="margin-top:14px">
+<h3>آماده‌سازی داده و کنترل‌های حریم خصوصی</h3>
+<div class="status-grid">
+<div class="status"><b>منبع فقط‌خواندنی</b><span>داده از رکوردهای SQLite بدون تغییر منبع تهیه شد.</span></div>
+<div class="status"><b>حذف تکرار</b><span>پیام‌ها بر اساس هویت پیام de-duplicate شدند.</span></div>
+<div class="status"><b>پاک‌سازی متن</b><span>نقل‌قول‌ها و امضاها حذف شدند.</span></div>
+<div class="status"><b>مستعارسازی خودکار</b><span>شناسه‌ها و اطلاعات مستقیم تا حد امکان حذف شدند.</span></div>
+<div class="status"><b>عدم ارسال شناسه منبع</b><span>URL، شناسه مشارکت‌کننده، HTML کامل و credential برای طبقه‌بندی ارسال نشدند.</span></div>
+<div class="status"><b>اعتبارسنجی خروجی</b><span>enum ثابت، شناسه، کامل‌بودن و منع verdict حقوقی بررسی شد.</span></div>
+</div>
+<p>خطاهای schema در checkpoint ثبت و دوباره اجرا می‌شوند. hash محتوای یکسان و taxonomy یکسان امکان استفاده مجدد از برچسب‌ها را می‌دهد. با این حال، de-identification خودکار حذف همه شناسه‌های زمینه‌ای را تضمین نمی‌کند.</p>
+</div>
+<div class="panel" style="margin-top:14px">
+<h3>بازتولید گزارش</h3>
+<ol class="list">
+<li>استفاده از dataset manifest و برچسب‌های موجود برای اجرای خلاصه‌سازی.</li>
+<li>استخراج checkpoint جدید با اسکریپت export.</li>
+<li>ساخت مجدد گزارش با coverage.json همان snapshot.</li>
+</ol>
+<code class="code">python label_data.py summarize
+python scripts/export_crawl_snapshot.py
+python build_analysis.py --coverage coverage.json</code>
+<p class="small">فرمان سوم مطابق توضیح گزارش است؛ نام دقیق آرگومان‌های CLI باید با help نسخه نصب‌شده اسکریپت تطبیق داده شود. بسته گزارش تجمیعی شامل پست خام، نگاشت منبع، کلید مستعارسازی یا ورودی API نیست.</p>
+<p>LaTeX و PDF از یک مدل محتوای تجمیعی استفاده می‌کنند. MiKTeX نصب شده اما initialize نشده است؛ بنابراین کامپایل LaTeX انجام نشده. نسخه PDF با ReportLab موجود تولید و از نظر بصری بررسی شده است.</p>
+<p class="small">مراجع ارائه‌دهنده: <a href="https://docs.metisai.ir/api/wrapper/deepseek/" rel="noopener" target="_blank">مستندات Metis AI</a> و <a href="https://api-docs.deepseek.com/quick_start/pricing/" rel="noopener" target="_blank">صفحه قیمت‌گذاری DeepSeek</a>.</p>
+</div>
+</section>
+<section class="section" id="roadmap">
+<div class="section-head">
+<div><h2>نقشه راه اجرایی</h2><p>برنامه پیشنهادی؛ اجرای آن در ممیزی Phase 1 انجام نشده است</p></div>
+<span class="section-tag">PROPOSED PLAN</span>
+</div>
+<div class="grid two-col">
+<div class="panel">
+<h3>هفته اول و دوم</h3>
+<div class="timeline">
+<div class="timeline-item"><b>هفته ۱ · هویت canonical و قواعد corpus</b><p>تعریف کلید موضوع/صفحه/پست، جداسازی پروفایل و ناوبری، تطبیق ۶۲ رکورد alias اضافه.</p></div>
+<div class="timeline-item"><b>هفته ۱ · حریم خصوصی و کنترل دسترسی</b><p>تأیید قواعد redaction، pseudonym کلیددار، ذخیره‌سازی محدود داده خام و بررسی false positive.</p></div>
+<div class="timeline-item"><b>هفته ۱ · اتصال منبع به صفحه و تست کیفیت</b><p>مستندسازی و تطبیق ۶۰ شکاف nullable در dataset مشتق‌شده.</p></div>
+<div class="timeline-item"><b>هفته ۲ · projection پاسخ و تاریخ</b><p>استخراج شناسه پایدار پاسخ/نویسنده و تاریخ جلالی همراه provenance، timezone و عدم‌قطعیت.</p></div>
+<div class="timeline-item"><b>هفته ۲ · داشبورد کیفیت و پوشش</b><p>نمایش خانواده منبع، پوشش، کامل‌بودن زمانی و شاخص‌های حریم خصوصی با مخرج مشخص.</p></div>
+<div class="timeline-item"><b>هفته ۲ · ارزیابی retrieval محدود</b><p>ارزیابی FTS روی corpus curated و redacted با بازبین دامنه و ثبت خطاها.</p></div>
+</div>
+</div>
+<div class="panel">
+<h3>هفته‌های سوم و چهارم</h3>
+<div class="timeline">
+<div class="timeline-item"><b>هفته ۳ · بررسی بخش‌بندی فعالیت</b><p>فقط با فعالیت نرمال‌شده؛ مستندسازی bias نمونه و حداقل شواهد؛ بدون استنباط ویژگی حساس سلامت.</p></div>
+<div class="timeline-item"><b>هفته ۳ · taxonomy منبع و تخصص</b><p>تفکیک گفتگوهای جامعه، پاسخ متخصص و محتوای تحریریه/مرجع؛ اعتبارسنجی مدارک و نگاشت شواهد.</p></div>
+<div class="timeline-item"><b>هفته ۴ · گسترش هدفمند پوشش</b><p>طراحی نمونه‌گیری خانواده/زمان، اهداف صفحه‌بندی و ثبت missingness؛ خزش جدید یک اقدام عملیاتی جداگانه است.</p></div>
+<div class="timeline-item"><b>هفته ۴ · تصمیم معماری تولید</b><p>بررسی اندازه corpus، concurrency و دسترسی؛ تصمیم درباره کفایت SQLite یا نیاز به مخزن تحلیلی مدیریت‌شده.</p></div>
+</div>
+</div>
+</div>
+<details>
+<summary>فایل‌ها و شواهد پشتیبان ممیزی</summary>
+<ul class="list">
+<li><code>database_inventory.md</code> و <code>data_dictionary.csv</code>: جدول‌ها، ستون‌ها، نوع داده، nullable، کلیدها و indexها.</li>
+<li><code>data_quality_report.md</code> و <code>analytics_readiness.md</code>: یافته‌های کیفیت و ارزیابی قابلیت‌ها.</li>
+<li><code>initial_analytics.md</code> و <code>recommended_roadmap.md</code>: بینش‌های مجاز نمونه و نقشه راه دو تا چهار هفته‌ای.</li>
+<li><code>profile_sqlite.py</code>: profiler قابل استفاده مجدد در حالت فقط‌خواندنی.</li>
+<li><code>profile_metrics.json</code> و <code>audit_manifest.json</code>: اندازه‌گیری‌های تجمیعی و شواهد hash منبع بدون تغییر.</li>
+<li><code>audited_snapshot/captured_contributor_counts.csv</code>: شمارش پاسخ‌های مشاهده‌شده با pseudonym و محدودیت صریح نمونه.</li>
+</ul>
+</details>
+<div class="panel" style="margin-top:14px">
+<h3>معیارهای پذیرش پایان هفته دوم</h3>
+<ul class="list">
+<li>زیرمجموعه محتوایی بازبینی‌شده و deduplicate‌شده با URL منبع، زمان capture، کلید canonical و تصمیم حریم خصوصی.</li>
+<li>تست استخراج پست/نویسنده/تاریخ برای تکرار، بدنه مفقود، تاریخ جلالی و موضوع کوتاه/بلند؛ مقادیر مفقود صریح باقی بمانند.</li>
+<li>داشبورد مدیریتی با محدودیت نمونه و پوشش؛ شمارش مشارکت captured از engagement کل سایت جدا باشد.</li>
+<li>مجموعه ارزیابی retrieval بررسی‌شده توسط متخصص دامنه؛ بدون استنتاج صحت پزشکی یا اعتبار از محبوبیت جامعه.</li>
+</ul>
+</div>
+<div class="notice">
+        زیرساخت فعلی SQLite با حجم ۲۰۶٫۲۵ MiB برای profiling آفلاین و prototype تحلیلی محدود کافی است. در این فاز GPU یا زیرساخت embedding اضافی لازم نیست. پشتیبانی پیشنهادی شامل اجرای batch مبتنی بر CPU، کد versioned، ذخیره‌سازی رمزگذاری‌شده، backup معتبر و manifest قابل بازتولید است.
+      </div>
+</section>
+<section class="section">
+<div class="section-head"><div><h2>محدودیت‌ها و موارد خارج از دامنه</h2><p>مواردی که نباید از این گزارش نتیجه‌گیری شوند</p></div></div>
+<div class="grid three-col">
+<div class="status"><b>بدون نتیجه حقوقی</b><span>پرچم‌های مدل اتهام، تخلف یا تعیین وضعیت قانونی افراد نیستند.</span></div>
+<div class="status"><b>بدون تشخیص پزشکی</b><span>متن انجمن و دسته‌بندی مدل، شواهد بالینی یا توصیه پزشکی تأییدشده نیست.</span></div>
+<div class="status"><b>بدون پروفایل حساس</b><span>نباید دسته‌های سلامت یا سایر موضوعات حساس به پروفایل افراد متصل شوند.</span></div>
+<div class="status"><b>بدون رتبه نفوذ</b><span>شمارش پیام و بازدید، شاخص influence یا KOL نیست.</span></div>
+<div class="status"><b>بدون ادعای پوشش کامل</b><span>صف خزنده و شکاف صفحه‌بندی همچنان باز هستند.</span></div>
+<div class="status"><b>بدون ادعای دقت مدل</b><span>مجموعه gold انسانی و معیارهای precision/recall هنوز وجود ندارند.</span></div>
+</div>
+</section>
+</article>
+<div id="pageControls" class="page-footer-nav" aria-label="پیمایش صفحه‌ها"></div>
+<footer class="report-footer">
+  <span>دیدبان نی‌نی‌سایت · داخلی و محرمانه · فقط تحلیل تجمیعی</span>
+  <span>گزارش ۱۸ نوامبر ۲۰۲۶ · هر صفحه را می‌توان جداگانه چاپ کرد</span>
+</footer>
+</main>
+<script>
+(function() {
+  'use strict';
+  const pages = [{"slug": "overview", "label": "نمای کلی"}, {"slug": "work", "label": "کارهای انجام‌شده"}, {"slug": "analysis", "label": "فهرست تحلیل‌ها"}, {"slug": "collection", "label": "پوشش خزنده"}, {"slug": "participation", "label": "مشارکت کاربران"}, {"slug": "content", "label": "محتوا و بازبینی"}, {"slug": "foundation", "label": "پایگاه داده و AI"}, {"slug": "decisions", "label": "تصمیم‌ها"}, {"slug": "roadmap", "label": "هزینه و نقشه راه"}];
+  const nav = document.querySelectorAll('[data-nav]');
+  const search = document.getElementById('reportSearch');
+  let activeSlug = '';
+
+  function setActive(slug) {
+    const index = pages.findIndex(p => p.slug === slug);
+    const effective = index === -1 ? 'overview' : slug;
+    const idx = pages.findIndex(p => p.slug === effective);
+    activeSlug = effective;
+    document.querySelectorAll('.site-page').forEach(page => {
+      const visible = page.dataset.page === effective;
+      page.classList.toggle('is-active', visible);
+      page.setAttribute('aria-hidden', String(!visible));
+    });
+    nav.forEach(a => {
+      const isActive = a.dataset.nav === effective;
+      a.classList.toggle('active', isActive);
+      if (isActive) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+    search.value = '';
+    document.querySelectorAll('table[data-searchable] tbody tr').forEach(tr => tr.classList.remove('hidden-row'));
+    search.style.display = document.querySelector('.site-page.is-active table[data-searchable]') ? '' : 'none';
+    const controls = document.getElementById('pageControls');
+    const prev = idx > 0 ? '<a href="#/' + pages[idx-1].slug + '">→ صفحه قبل: ' + pages[idx-1].label + '</a>' : '';
+    const next = idx < pages.length-1 ? '<a href="#/' + pages[idx+1].slug + '">صفحه بعد: ' + pages[idx+1].label + ' ←</a>' : '';
+    controls.innerHTML = prev + '<span style="flex:1"></span>' + next;
+    document.title = pages[idx].label + ' | دیدبان نی‌نی‌سایت';
+    window.scrollTo(0,0);
+  }
+  function route() {
+    const path = decodeURIComponent(location.hash.replace(/^#\/?/, '')).split('/')[0];
+    setActive(path || 'overview');
+  }
+  window.addEventListener('hashchange', route);
+  search.addEventListener('input', () => {
+    const query = search.value.trim().toLocaleLowerCase('fa');
+    document.querySelectorAll('.site-page.is-active table[data-searchable] tbody tr').forEach(tr => {
+      tr.classList.toggle('hidden-row', !!query && !tr.innerText.toLocaleLowerCase('fa').includes(query));
+    });
+  });
+  route();
+})();
+</script>
+</body>
+</html>
