@@ -362,7 +362,26 @@
  .site-page.is-active {display:block!important;}
  .container {padding-top:0;}
 }
-</style>
+    .viz-note { color:var(--muted);font-size:10px;line-height:1.8;margin:8px 0 0; }
+    .viz-donut-wrap { display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;margin:8px 0 16px; }
+    .viz-donut { width:min(190px,45vw);height:auto;flex:none; }
+    .viz-donut-bg { fill:none;stroke:#e9eef2;stroke-width:18; }
+    .viz-donut-value { fill:none;stroke:var(--teal);stroke-width:18;stroke-linecap:round;transform:rotate(-90deg);transform-origin:110px 110px; }
+    .viz-donut-number { fill:var(--navy);font:800 24px Tahoma,Arial,sans-serif; }
+    .viz-donut-caption { fill:var(--muted);font:12px Tahoma,Arial,sans-serif; }
+    .viz-legend { display:grid;grid-template-columns:1fr 1fr;gap:7px 15px;min-width:180px;font-size:11px; }
+    .viz-legend span { display:flex;align-items:center;gap:7px; }
+    .viz-dot { width:10px;height:10px;border-radius:50%;display:inline-block;flex:none; }
+    .viz-row { display:grid;grid-template-columns:minmax(95px,1fr) minmax(100px,2fr) 54px;gap:9px;align-items:center;margin:11px 0;font-size:11px; }
+    .viz-track {height:10px;border-radius:99px;background:#edf2f5;overflow:hidden;}
+    .viz-fill {height:100%;border-radius:99px;background:linear-gradient(90deg,#087f8c,#48b8ad);}
+    .viz-fill.amber {background:linear-gradient(90deg,#bd8126,#e4b756);}
+    .viz-fill.blue {background:linear-gradient(90deg,#4d78a8,#88acd0);}
+    .viz-fill.red {background:linear-gradient(90deg,#bd6861,#e79a87);}
+    .viz-count {direction:ltr;text-align:left;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums;}
+    .viz-summary {display:flex;justify-content:space-between;gap:12px;align-items:center;border-top:1px solid var(--line);padding-top:10px;margin-top:12px;font-size:11px;}
+    .viz-summary b {direction:ltr;color:var(--navy);font-variant-numeric:tabular-nums;}
+    @media(max-width:620px){.viz-donut-wrap{gap:8px}.viz-legend{min-width:145px;grid-template-columns:1fr}.viz-row{grid-template-columns:95px minmax(70px,1fr) 48px;gap:6px;font-size:10px}}</style>
 </head>
 <body>
 <header class="topbar">
@@ -456,7 +475,51 @@
 </div>
 </section>
 <section class="section" id="report-pages"><div class="section-head"><div><h2>بخش‌های گزارش را جداگانه باز کنید</h2><p>هر موضوع در صفحه مستقل قرار گرفته تا مرور و ارائه آن ساده‌تر باشد.</p></div><span class="section-tag">REPORT SECTIONS</span></div><div class="page-index-grid"><a class="page-index-card" href="#/work"><strong>کارهای انجام‌شده</strong><span>مراحل اجرایی، خروجی‌ها و وضعیت تکمیل هر کار</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/analysis"><strong>فهرست تحلیل‌ها</strong><span>تمام تحلیل‌های موجود، داده‌ها، یافته‌ها و محدودیت‌ها</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/collection"><strong>خزش و پوشش داده</strong><span>پیشرفت crawl، pagination و وضعیت URLها</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/participation"><strong>مشارکت کاربران</strong><span>نقش‌های مشاهده‌شده و آمار مشارکت</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/content"><strong>محتوا و بازبینی انسانی</strong><span>طبقه‌بندی محتوا، confidence و صف بازبینی</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/foundation"><strong>پایگاه داده و آمادگی AI</strong><span>ممیزی SQLite، کیفیت داده و آمادگی RAG/AI</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/decisions"><strong>نتایج و تصمیم‌ها</strong><span>برداشت مدیریتی، ریسک‌ها و اولویت‌های بعدی</span><em>ورود به صفحه ←</em></a><a class="page-index-card" href="#/roadmap"><strong>هزینه و نقشه راه</strong><span>هزینه اجرا، بازتولید و برنامه پیشنهادی ادامه کار</span><em>ورود به صفحه ←</em></a></div></section>
-</article><article class="site-page" id="page-work" data-page="work" aria-label="کارهای انجام‌شده">
+<section class="section" id="analysis-charts">
+<div class="section-head"><div><h2>نمودارهای تحلیلی</h2><p>نمای دیداری از پوشش خزش، برچسب‌های محتوا و هزینه نمونه</p></div><span class="section-tag">ANALYSIS CHARTS</span></div>
+<div class="notice"><strong>دو زمان ثبت مستقل:</strong> آمار خزش از checkpoint مورخ ۲۱ نوامبر ۲۰۲۶، ساعت ۱۰:۱۱ UTC است؛ تحلیل پیام و هزینه مربوط به snapshot مورخ ۱۸ نوامبر ۲۰۲۶ است. این دامنه‌ها در یک مخرج ادغام نشده‌اند.</div>
+<div class="grid two-col">
+<div class="panel viz-panel">
+<h3>وضعیت پوشش URLهای داخل محدوده</h3>
+<p class="viz-note">به‌روزرسانی خزش: ۲۱ نوامبر ۲۰۲۶ · کل URLهای داخل محدوده: ۴۷٬۱۷۷</p>
+<div class="viz-donut-wrap">
+<svg class="viz-donut" viewBox="0 0 220 220" role="img" aria-labelledby="crawl-donut-title crawl-donut-desc">
+<title id="crawl-donut-title">پوشش خزش ۳٫۰۷ درصد</title><desc id="crawl-donut-desc">از ۴۷۱۷۷ URL داخل محدوده، ۱۴۵۰ تکمیل، ۴۵۲۱۲ در انتظار، ۴۲ ناموفق و ۴۷۳ رد شده‌اند.</desc>
+<circle class="viz-donut-bg" cx="110" cy="110" r="96"></circle><circle class="viz-donut-value" cx="110" cy="110" r="96" stroke-dasharray="18.54 584.65"></circle>
+<text class="viz-donut-number" x="110" y="105" text-anchor="middle">۳٫۰۷٪</text><text class="viz-donut-caption" x="110" y="129" text-anchor="middle">URL تکمیل‌شده</text></svg>
+<div class="viz-legend" aria-label="تفکیک وضعیت URLها"><span><i class="viz-dot" style="background:#087f8c"></i>تکمیل‌شده: ۱٬۴۵۰</span><span><i class="viz-dot" style="background:#d8e0e7"></i>در انتظار: ۴۵٬۲۱۲</span><span><i class="viz-dot" style="background:#bd6861"></i>ناموفق: ۴۲</span><span><i class="viz-dot" style="background:#c18a32"></i>ردشده: ۴۷۳</span></div>
+</div>
+<p class="viz-note">ممیزی ذخیره‌سازی و کلیدهای خارجی موفق بود؛ با وجود آن، پوشش خزش پایین است و کار پایان‌یافته محسوب نمی‌شود.</p>
+</div>
+<div class="panel viz-panel">
+<h3>پیشرفت صفحه‌بندی و پوشش موضوع‌ها</h3>
+<p class="viz-note">دنباله صفحه‌بندی: ۱۳۱ مورد از ۵۶۲ مورد تکمیل شده است.</p>
+<div class="viz-row"><span>دنباله‌های تکمیل‌شده</span><div class="viz-track" role="img" aria-label="۲۳٫۳ درصد دنباله‌های صفحه‌بندی تکمیل شده"><div class="viz-fill" style="width:23.31%"></div></div><b class="viz-count">۲۳٫۳٪</b></div>
+<div class="viz-row"><span>موضوع با ۱۰ صفحه</span><div class="viz-track" role="img" aria-label="۱۴ موضوع از ۶۴۰۰ موضوع به ۱۰ صفحه رسیده"><div class="viz-fill blue" style="width:0.22%"></div></div><b class="viz-count">۱۴</b></div>
+<div class="viz-row"><span>موضوع کوتاه و کامل</span><div class="viz-track" role="img" aria-label="۸۳ موضوع کوتاه کامل شده"><div class="viz-fill" style="width:1.30%"></div></div><b class="viz-count">۸۳</b></div>
+<div class="viz-summary"><span>موضوع‌های دارای صفحه‌های الزامیِ مفقود</span><b>۶٬۳۰۳ از ۶٬۴۰۰</b></div>
+<p class="viz-note">سقف ۱۰ صفحه برای موضوع گفتگو، رسیدن به انتهای واقعی همه دنباله‌ها را اثبات نمی‌کند.</p>
+</div>
+<div class="panel viz-panel">
+<h3>دسته‌های پرتکرار محتوایی</h3>
+<p class="viz-note">نمونه برچسب‌گذاری‌شده: ۴٬۸۱۹ پیام · snapshot مورخ ۱۸ نوامبر ۲۰۲۶</p>
+<div class="viz-row"><span>گفت‌وگوی معمول</span><div class="viz-track"><div class="viz-fill" style="width:100%"></div></div><b class="viz-count">۳٬۲۳۹</b></div>
+<div class="viz-row"><span>زمینه ناکافی</span><div class="viz-track"><div class="viz-fill amber" style="width:29.8%"></div></div><b class="viz-count">۹۶۴</b></div>
+<div class="viz-row"><span>آموزش سلامت</span><div class="viz-track"><div class="viz-fill blue" style="width:10.5%"></div></div><b class="viz-count">۳۳۹</b></div>
+<div class="viz-row"><span>حذف اطلاعات خصوصی</span><div class="viz-track"><div class="viz-fill blue" style="width:8.5%"></div></div><b class="viz-count">۲۷۶</b></div>
+<div class="viz-row"><span>ادعای پزشکی نیازمند بررسی</span><div class="viz-track"><div class="viz-fill red" style="width:2.3%"></div></div><b class="viz-count">۷۳</b></div>
+<p class="viz-note">برچسب‌های محتوا چندگانه‌اند؛ ردیف‌ها را نباید به‌عنوان سهم‌های انحصاری از کل پیام‌ها جمع زد. خروجی مدل نیز اعتبارسنجی انسانی مستقل نشده است.</p>
+</div>
+<div class="panel viz-panel">
+<h3>بازبینی انسانی و سقف هزینه</h3>
+<p class="viz-note">حجم بازبینی نسبت به پیام‌ها، و هزینه گزارش‌شده نسبت به سقف مجاز</p>
+<div class="viz-row"><span>در صف بازبینی</span><div class="viz-track"><div class="viz-fill amber" style="width:76.5%"></div></div><b class="viz-count">۳٬۶۸۵</b></div>
+<div class="viz-row"><span>مصرف سقف ۵ دلاری</span><div class="viz-track"><div class="viz-fill" style="width:55.69%"></div></div><b class="viz-count">۵۵٫۷٪</b></div>
+<div class="viz-summary"><span>هزینه محاسبه‌شده</span><b>$۲٫۷۸۴۳۰۷ / $۵</b></div>
+<p class="viz-note">این هزینه برآورد محافظه‌کارانه کلاینت است؛ برای مبلغ قطعی، صورتحساب ارائه‌دهنده مرجع خواهد بود.</p>
+</div>
+</div>
+</section></article><article class="site-page" id="page-work" data-page="work" aria-label="کارهای انجام‌شده">
 <section class="page-hero"><div class="eyebrow">گزارش مدیریتی نی‌نی‌سایت · صفحه 2 از 9</div><h1>کارهای انجام‌شده و خروجی‌های تحویل‌شده</h1><p>شرح فعالیت‌های اجرایی از ممیزی پایگاه داده و خزش تا آماده‌سازی پیام‌ها، برچسب‌گذاری و گزارش‌دهی.</p><div class="page-hero-meta"><span>داخلی · محرمانه</span><span>۱۸ نوامبر ۲۰۲۶</span><span>شواهد و آمار در دامنه هر snapshot</span></div></section>
 <section class="section" id="work-done">
 <div class="section-head">
