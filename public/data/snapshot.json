@@ -1,27 +1,27 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T12:32:58.929489+00:00",
+  "generatedAt": "2026-11-22T12:39:11.048242+00:00",
   "crawl": {
-    "snapshotAt": "2026-11-22T12:30:22.610786+00:00",
+    "snapshotAt": "2026-11-22T12:38:57.074675+00:00",
     "complete": false,
-    "allDiscovered": 185503,
-    "inScope": 99692,
-    "successfulPages": 5981,
+    "allDiscovered": 187030,
+    "inScope": 100351,
+    "successfulPages": 6044,
     "statuses": {
-      "completed": 6006,
+      "completed": 6069,
       "failed": 106,
-      "pending": 92484,
+      "pending": 93074,
       "processing": 1,
-      "skipped": 1095
+      "skipped": 1101
     },
-    "urlCoveragePercent": 6.024555631344541,
-    "sequences": 1507,
-    "completedSequences": 525,
+    "urlCoveragePercent": 6.047772319159749,
+    "sequences": 1518,
+    "completedSequences": 532,
     "topics": {
-      "topics_discovered": 13561,
+      "topics_discovered": 13684,
       "topics_with_first_ten_pages": 47,
-      "shorter_topics_complete": 423,
-      "topics_pending": 13091,
+      "shorter_topics_complete": 430,
+      "topics_pending": 13207,
       "topic_page_goal": 10
     },
     "integrityOk": true,
@@ -87,7 +87,7 @@
       },
       {
         "hour": "2026-11-22T12:00:00Z",
-        "pages": 322
+        "pages": 365
       }
     ]
   },
