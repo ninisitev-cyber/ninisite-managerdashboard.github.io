@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "scripts": { "dev": "npm run build && node scripts/serve.mjs", "build": "tsc -p tsconfig.json && node scripts/copy-static.mjs", "preview": "node scripts/serve.mjs" },
+  "scripts": { "dev": "npm run build && node scripts/serve.mjs", "build": "tsc -p tsconfig.json && tsc -p tsconfig.server.json && node scripts/copy-static.mjs", "preview": "node scripts/serve.mjs", "review": "npm run build && node dist/server/server.js", "export:review": "npm run build && node dist/server/server.js --export" },
   "devDependencies": { "typescript": "7.0.2" }
 }

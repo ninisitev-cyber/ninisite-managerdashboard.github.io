@@ -1,27 +1,27 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-11-22T12:39:11.048242+00:00",
+  "generatedAt": "2026-11-25T08:11:59.711132+00:00",
   "crawl": {
-    "snapshotAt": "2026-11-22T12:38:57.074675+00:00",
+    "snapshotAt": "2026-11-25T08:10:51.104556+00:00",
     "complete": false,
-    "allDiscovered": 187030,
-    "inScope": 100351,
-    "successfulPages": 6044,
+    "allDiscovered": 274315,
+    "inScope": 139437,
+    "successfulPages": 9854,
     "statuses": {
-      "completed": 6069,
-      "failed": 106,
-      "pending": 93074,
+      "completed": 9879,
+      "failed": 147,
+      "pending": 127873,
       "processing": 1,
-      "skipped": 1101
+      "skipped": 1537
     },
-    "urlCoveragePercent": 6.047772319159749,
-    "sequences": 1518,
-    "completedSequences": 532,
+    "urlCoveragePercent": 7.084920071430108,
+    "sequences": 2369,
+    "completedSequences": 886,
     "topics": {
-      "topics_discovered": 13684,
-      "topics_with_first_ten_pages": 47,
-      "shorter_topics_complete": 430,
-      "topics_pending": 13207,
+      "topics_discovered": 21184,
+      "topics_with_first_ten_pages": 52,
+      "shorter_topics_complete": 754,
+      "topics_pending": 20378,
       "topic_page_goal": 10
     },
     "integrityOk": true,
@@ -87,7 +87,67 @@
       },
       {
         "hour": "2026-11-22T12:00:00Z",
-        "pages": 365
+        "pages": 542
+      },
+      {
+        "hour": "2026-11-22T13:00:00Z",
+        "pages": 396
+      },
+      {
+        "hour": "2026-11-22T18:00:00Z",
+        "pages": 231
+      },
+      {
+        "hour": "2026-11-22T19:00:00Z",
+        "pages": 537
+      },
+      {
+        "hour": "2026-11-22T20:00:00Z",
+        "pages": 371
+      },
+      {
+        "hour": "2026-11-22T21:00:00Z",
+        "pages": 422
+      },
+      {
+        "hour": "2026-11-22T22:00:00Z",
+        "pages": 183
+      },
+      {
+        "hour": "2026-11-23T08:00:00Z",
+        "pages": 252
+      },
+      {
+        "hour": "2026-11-23T09:00:00Z",
+        "pages": 396
+      },
+      {
+        "hour": "2026-11-23T10:00:00Z",
+        "pages": 145
+      },
+      {
+        "hour": "2026-11-23T11:00:00Z",
+        "pages": 292
+      },
+      {
+        "hour": "2026-11-23T12:00:00Z",
+        "pages": 59
+      },
+      {
+        "hour": "2026-11-23T15:00:00Z",
+        "pages": 88
+      },
+      {
+        "hour": "2026-11-23T16:00:00Z",
+        "pages": 189
+      },
+      {
+        "hour": "2026-11-25T07:00:00Z",
+        "pages": 8
+      },
+      {
+        "hour": "2026-11-25T08:00:00Z",
+        "pages": 79
       }
     ]
   },
