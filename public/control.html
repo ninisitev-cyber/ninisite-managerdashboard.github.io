@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#123246">
+  <meta name="description" content="مرکز کنترل خزش، تحلیل خودکار و بازبینی سریع محتوای پرریسک">
+  <title>مرکز کنترل | دیدبان نی‌نی‌سایت</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./crawl-review.css">
+  <link rel="stylesheet" href="./control.css">
+  <script type="module" src="./assets/control.js"></script>
+</head>
+<body>
+  <a class="skip" href="#control">رفتن به مرکز کنترل</a>
+  <header class="site-header"><div class="wrap header-inner">
+    <a class="brand" href="./index.html">دیدبان نی‌نی‌سایت</a>
+    <nav aria-label="ناوبری اصلی">
+      <a href="./index.html">داشبورد</a>
+      <a aria-current="page" href="./control.html">مرکز کنترل</a>
+      <a href="./crawl-review.html">بازبینی خزش</a>
+      <a href="./ninisite_all_in_one.html">گزارش تحلیلی</a>
+    </nav>
+  </div></header>
+  <main id="control" class="wrap">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">CONTROL CENTER / مرکز کنترل</p>
+        <h1>خزش، تحلیل خودکار و بازبینی سریع محتوا</h1>
+        <p class="lead">این صفحه به پایگاه خزش وصل می‌شود، تحلیل را خودکار تازه می‌کند، و با پایگاه کلیدواژه‌های محتوای پرریسک پست‌های مشکوک را برای بازبینی انسانی پیدا می‌کند. نتیجهٔ کلیدواژه حکم قانونی نیست.</p>
+      </div>
+      <div class="actions stack">
+        <button type="button" id="refresh" class="primary">تازه‌سازی تحلیل</button>
+        <label class="auto"><input type="checkbox" id="auto" checked> تحلیل خودکار هر ۳۰ ثانیه</label>
+        <p id="source-mode" aria-live="polite">در حال اتصال…</p>
+      </div>
+    </section>
+
+    <section class="panel scan-panel">
+      <h2>بازبینی سریع پست‌های پرریسک</h2>
+      <p>فقط صفحه‌های تاپیک ذخیره‌شده در SQLite را با واژه‌نامهٔ محلی می‌سنجد. تبلیغات خزش نمی‌شوند. دو عمق بازبینی:</p>
+      <div class="scan-actions">
+        <button type="button" id="scan3" class="secondary">بازبینی ۳ صفحهٔ آخر هر تاپیک</button>
+        <button type="button" id="scan10" class="secondary">بازبینی ۱۰ صفحهٔ آخر هر تاپیک</button>
+      </div>
+      <p id="scan-status" class="note" aria-live="polite">آماده برای اسکن</p>
+    </section>
+
+    <div id="error" role="alert" hidden></div>
+    <div id="content" aria-live="polite"><p class="loading">در حال بارگذاری مرکز کنترل…</p></div>
+  </main>
+  <footer class="wrap footer">تحلیل تجمیعی و پرچم کلیدواژه‌ای برای بازبینی داخلی؛ متن کامل کاربران در رابط عمومی منتشر نمی‌شود و تشخیص حقوقی انجام نمی‌شود.</footer>
+</body>
+</html>

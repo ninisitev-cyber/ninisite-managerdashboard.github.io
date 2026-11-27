@@ -38,3 +38,5 @@ async function load(refresh=false){
 }
 button.addEventListener('click',()=>void load(true));
 void load();
+
+export {};
